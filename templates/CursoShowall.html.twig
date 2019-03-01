@@ -1,0 +1,46 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Curso Showall{% endblock %}
+{% block body %}
+	<div class="container">
+			{% if userTipo == 2 %}
+			<a href="?accion=vistainsertar"><button type="button" class="btn btn-primary btn-lg btn-block">{{ strings['newcurso'] }}</button></a>
+			<br>
+			<a href="?accion=vistaimportar"><button type="button" class="btn btn-primary btn-lg btn-block">{{ strings['obtenerCurso'] }}</button></a>
+			<br>
+			{% endif %}
+			{% if userTipo == 1 %}
+			<a href="?accion=vistafiltrar"><button type="button" class="btn btn-primary btn-lg btn-block">{{ strings['filtrar'] }}</button></a>
+			<br>
+			{% endif %}
+			
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+					  <th scope="col">{{ strings['nombreCurso2']}}</th>
+					  <th scope="col">{{ strings['descripcionCurso2'] }}</th>
+					  <th scope="col">{{ strings['username'] }}</th>
+					  <th scope="col"></th>
+					  <th scope="col"></th>
+					  <th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+		
+		{% for valor in datos %}
+			{# set usuario = ObtenerUsername(valor['3']) #}
+					<tr>
+						<th><a href="?accion=ver&amp;id={{ valor['0'] }}">{{ valor['1'] }}</a></th>
+						<td>{{ valor['2']}}</td>
+						<td>{{ valor['3'] }}</td>
+						
+						<td><a href="?accion=vistadesasignar&amp;id={{ valor['0'] }}"><button type="button" class="btn btn-success">{{ strings['EliminarAsignaturas'] }}</button></a></td>
+						<td><a href="?accion=vistaasignar&amp;id={{ valor['0'] }}"><button type="button" class="btn btn-success">{{ strings['AsignarAsignaturas'] }}</button></a></td>
+						<td><a href="?accion=vistamodificar&amp;id={{ valor['0'] }}"><button type="button" class="btn btn-primary">{{ strings['cursomodificar'] }}</button></a></td>
+						<td><a href="?accion=vistaeliminar&amp;id={{ valor['0'] }}"><button type="button" class="btn btn-danger">{{ strings['cursoeliminar'] }}</button></a></td>
+					</tr>
+		{% endfor %}
+				</tbody>
+			</table>
+		</div>
+{% endblock %}

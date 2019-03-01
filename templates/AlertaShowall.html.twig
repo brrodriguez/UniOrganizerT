@@ -1,0 +1,45 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Alerta Showall{% endblock %}
+{% block body %}
+            <div class="container">
+				<br>
+                <div align='left'>
+                    {% if userTipo == 2 %}
+						<a href='ALERTA_Controller.php?accion={{ strings['Crear'] }}'><button type="button" class="btn btn-primary btn-lg btn-block">{{ strings['Crear'] }}</button></a>
+					{% endif %}
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                {% for titulo in lista %}
+                                    <th>
+                                    {{ strings[titulo] }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>       
+								{% for dato in datos %}
+                                    <tr>
+									    {% for clave, valor in dato %}
+											{% for key in lista %}
+												{% if clave == key %}
+													<td>
+													{% if clave == 'asuntoAlerta' %}
+														<a href='ALERTA_Controller.php?idAlerta={{ dato['idAlerta'] }}&amp;accion={{ strings['Ver'] }}'>{{ dato['asuntoAlerta'] }}</a>
+													{% else %}
+														{{ valor }}													
+                                                    {% endif %}									
+													</td>
+												{% endif %}										
+										    {% endfor %}
+										{% endfor %}
+										<td><button type="button" class="btn btn-primary"><a href='ALERTA_Controller.php?idAlerta={{ dato['idAlerta'] }}&amp;accion={{ strings['Modificar'] }}'>{{ strings['Modificar'] }}</a></button></td>
+										<td><button type="button" class="btn btn-danger"><a href='ALERTA_Controller.php?idAlerta={{ dato['idAlerta'] }}&amp;accion={{ strings['Borrar'] }}'>{{ strings['Borrar'] }}</a></button></td>
+                                    </tr>
+								{% endfor %}							                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock %}

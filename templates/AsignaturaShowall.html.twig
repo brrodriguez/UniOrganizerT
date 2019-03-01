@@ -1,0 +1,32 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Asignatura Showall{% endblock %}
+{% block body %}
+	<div class="container">
+            <br>
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">{{ strings['asignaturanombre'] }}</th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+                {% if datos == NULL %}
+                    
+                {% else %}
+                    {% for valor in datos %}
+                                <tr>
+                                    <th><br>{{ valor['1'] }}</th>
+                                    <td><a href="https://secretaria.uvigo.gal/docnet-nuevo/guia_docent/index.php{{ valor['href'] }}" target="_blank"><button type="button" class="btn btn-success">{{ strings['Guia'] }}</button></a></td>
+                                    {% if tipoUsuario == 1 %}
+                                        <td><a href="?accion=vistaeliminar&amp;id={{ valor['0'] }}"><button type="button" class="btn btn-danger">{{ strings['asignaturaeliminar'] }}</button></a></td>
+                                    {% endif %}
+                                </tr>
+                    {% endfor %}
+                {% endif %}				
+				</tbody>
+			</table>
+		</div>
+{% endblock %}

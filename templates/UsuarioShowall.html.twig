@@ -1,0 +1,45 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Usuario Showall{% endblock %}
+{% block body %}
+	<div class="container">
+            <div class="container">
+                <div align='center'>
+					<a href='USUARIO_Controller.php?accion={{ strings['Insertar'] }}&amp;user=admin'><img src="../img/admin.jpg" width="54px" height="54px">{{ strings['addAdministrador'] }}</a>
+					
+         
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                {% for titulo in lista %}
+                                    <th>
+                                    {{ strings[titulo] }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                         </thead>
+                        <tbody>
+                                {% for dato in datos %}
+                                    <tr>
+                                    {% for clave, valor in dato %}
+                                        {% for key in lista %}
+                                            {% if clave == key %}
+                                                <td>
+                                                {% if clave == 'username' %}
+                                                    <a href='USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Ver'] }}'><font color="#088A4B">{{ valor }}</font></a>
+                                                {% else %}
+                                                    {{ valor }}
+                                                {% endif %}
+                                                </td>
+                                            {% endif %}
+                                        {% endfor %}       
+                                    {% endfor %}      
+                                    <td><button type="button" class="btn btn-info"><a href='USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Modificar'] }}'>{{ strings['Modificar'] }}</a></button></td>
+                                    <td><button type="button" class="btn btn-danger"><a href='USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Borrar'] }}'>{{ strings['Borrar'] }}</a></button></td>
+                                {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Alerta Add{% endblock %}
+{% block body %}
+	<div class="container" >
+            <form  id="form" name="form" action='ALERTA_Controller.php'  method='post'   enctype="multipart/form-data">
+                <div class="form-group" >
+                    <label class="control-label" >{{ strings['Insertar Alerta'] }}</label><br>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['asuntoAlerta']}}*</label><br>
+                    <input onchange="return valida_envia_asuntoAlerta()" class="form" id="asuntoAlerta" name="asuntoAlerta" size="50" type="text" required="true"/>
+                </div>
+
+               <div class="form-group">
+                    <label class="control-label" >{{ strings['descripcionAlerta'] }}*</label><br>
+                    <textarea onchange="return valida_envia_descripcionAlerta()" class="form" id="descripcionAlerta" name="descripcionAlerta" rows="10" cols="70" required="true"></textarea>
+                </div>
+				
+				{% if fecha == NULL %}
+				<div class="form-group">
+                    <label class="control-label" >{{ strings['Fecha'] }}</label><br>
+                    <input class="form" id="fecha" name="fecha" type="date" required="true"/>
+                </div>
+				{% else %}
+				<div class="form-group">
+                    <label class="control-label" >{{ strings['Fecha'] }}</label><br>
+                    <input class="form" id="fecha" name="fecha" type="date" required="true" value="{{ fecha }}"/>
+                </div>	
+				{% endif %}
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['Hora'] }}*</label><br>
+                    <input onchange="return valida_envia_hora()" class="form" id="hora" name="hora" type="time" required="true"/>
+                </div>
+				
+				<div class="form-group">
+					<label class="control-label" >{{ strings['Curso'] }}*</label><br>
+					<select name="curso">
+						{% for curso in cursos %}
+							<option value="{{ curso['nombreCurso'] }}">{{ curso['nombreCurso'] }}</option><?php
+						{% endfor %}
+					</select>
+                </div>
+				
+				<div class="form-group">
+                    <input type="hidden" id="username" name="username" size="25" type="text" required="true" value='usuario'/>
+                </div>
+				
+				<h4><b>{{ strings['Aviso'] }}</b></h4>
+				
+				<div class="form-group">
+                    <label class="control-label" >{{ strings['Dias'] }}</label><br>
+                    <input class="form" id="dias" name="dias" type="text"/>
+                </div>
+				
+                <input type='submit' onclick="return valida_envia_ALERTA()" name='accion'  value="{{ strings['Crear'] }}">
+                <a class="form-link" href="{{ volver }}">{{ strings['Volver'] }}</a>
+            </form>
+        </div>
+{% endblock %}

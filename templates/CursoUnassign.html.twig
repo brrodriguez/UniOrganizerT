@@ -1,0 +1,26 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Curso Unassing{% endblock %}
+{% block body %}
+	<div class="container">
+				<h4><b>{{ strings['nombreCurso'] }}: </b>{{ datos['curso']['nombreCurso'] }}</h4>
+				<h5><b>{{ strings['descripcionCurso'] }}: </b>{{ datos['curso']['descripcionCurso'] }}</h5>
+        <br><br><br><br>
+        <table class="table">
+			  <thead class="thead-dark">
+				<tr>
+				  <th scope="col">{{ strings['nombreAsignatura'] }}</th>
+				  <th scope="col"></th>
+				</tr>
+			  </thead><tbody>
+        {% for valor in datos['asignaturas'] %}
+            <tr>
+            <th>{{ valor['nombreAsignatura'] }}</th>
+            <td><a href="?accion=desasignar&amp;idCurso={{ _GET["id"] }}&amp;idAsignatura={{ valor['idAsignatura'] }}"><button type="button" class="btn btn-danger btn-sm">Desasignar</button></a></td>
+            </tr>
+		{% endfor %}
+        </tbody>
+		</table>
+		<a class="form-link" href="{{ volver }}">{{ strings['Volver'] }}</a>
+	</div>
+{% endblock %}

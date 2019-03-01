@@ -1,0 +1,35 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Alerta Delete{% endblock %}
+{% block body %}
+	<div class="container" >
+            <form  id="form" name="form" action='ALERTA_Controller.php'  method='post'   enctype="multipart/form-data">
+                <div class="form-group" >
+                    <label class="control-label" >{{ strings['Borrar Alerta'] }}</label><br>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['asuntoAlerta'] }}</label><br>
+                     <input class="form" id="asuntoAlerta" name="asuntoAlerta"  size="50" readonly="true" value="{{ datos['asuntoAlerta'] }}">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['descripcionAlerta'] }}</label><br>
+                    <textarea rows="8" cols="60" name="descripcionAlerta" readonly="true">{{ datos['descripcionAlerta'] }}</textarea>
+                    
+                </div>
+
+
+                <div class="form-group">
+                    <input type="hidden" class="form" id="username" name="username" size="25" type="text" readonly="true" value="{{ datos['username'] }}">
+                </div>
+                 <div class="form-group">
+                    <input type="hidden" class="form" id="idAlerta" name="idAlerta" size="25" type="text" readonly="true" value="{{ datos['idAlerta'] }}">
+                </div>
+        <br>
+        <input type='submit' onclick="" name='accion'  value="{{ strings['Borrar'] }}">
+        <a class="form-link" href='{{volver }} '>{{strings['Volver'] }} </a>
+        </form>
+
+        </div>
+{% endblock %}

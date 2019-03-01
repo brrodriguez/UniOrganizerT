@@ -1,0 +1,505 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Principal{% endblock %}
+{% block body %}
+		{% if userTipo == 2 %}
+		{#
+			{% set data = data|default([]) %}
+			{% set today = date("today") %}
+			{% set time = date(time|default(today)) %}
+			{% set numberOfMonth = numberOfMonth|default(3) %}
+			{% set spanOtherMonth = spanOtherMonth|default(false) %}
+			{% set firstDay = firstDay|default(1) %}
+			{% set dateStringToday = time|date('Y-m-d') %}
+			{% set disableNavigation = disableNavigation|default(false) %}
+
+			{% set prevText %}<i class="cal-icon-prev">&laquo;</i>{% endset %}
+			{% set nextText %}<i class="cal-icon-next">&raquo;</i>{% endset %}
+
+			{% set daynames = daynames|default({
+					0: { short: 'calendar_short_day_sunday'    | translate, full: 'calendar_full_day_sunday'    | translate },
+					1: { short: 'calendar_short_day_monday'    | translate, full: 'calendar_full_day_monday'    | translate },
+					2: { short: 'calendar_short_day_tuesday'   | translate, full: 'calendar_full_day_tuesday'   | translate },
+					3: { short: 'calendar_short_day_wednesday' | translate, full: 'calendar_full_day_wednesday' | translate },
+					4: { short: 'calendar_short_day_thursday'  | translate, full: 'calendar_full_day_thursday'  | translate },
+					5: { short: 'calendar_short_day_friday'    | translate, full: 'calendar_full_day_friday'    | translate },
+					6: { short: 'calendar_short_day_saturday'  | translate, full: 'calendar_full_day_saturday'  | translate }
+			}) %}
+
+			{% set monthnames = monthnames|default({
+					1:  { short: 'january'   | translate, full: 'january' | translate},
+					2:  { short: 'february'  | translate, full: 'february' | translate},
+					3:  { short: 'march'     | translate, full: 'march' | translate},
+					4:  { short: 'april'     | translate, full: 'april' | translate},
+					5:  { short: 'may'       | translate, full: 'may' | translate},
+					6:  { short: 'june'      | translate, full: 'june' | translate},
+					7:  { short: 'july'      | translate, full: 'july' | translate},
+					8:  { short: 'august'    | translate, full: 'august' | translate},
+					9:  { short: 'september' | translate, full: 'september' | translate},
+					10: { short: 'october'   | translate, full: 'october' | translate},
+					11: { short: 'november'  | translate, full: 'november' | translate},
+					12: { short: 'december'  | translate, full: 'december' | translate}
+			}) %}
+
+			{% if app.debug %}
+			<!-- // DEBUG
+					data:               {{ data|json_encode }}
+					today:              {{ today.format('Y-m-d H:i:s') }}
+					time:               {{ time.format('Y-m-d H:i:s') }}
+					numberOfMonth:      {{ numberOfMonth }}
+					spanOtherMonth:     {{ spanOtherMonth }}
+					firstDay:           {{ firstDay }}
+					disableNavigation:  {{ disableNavigation }}
+			-->
+			{% endif %}
+
+			<div class="cal-calendar{% if numberOfMonth > 1 %} cal-group{% endif %}">
+					{% if not disableNavigation -%}
+							<div class="cal-btn">
+									<a class="cal-prev" title="">
+											<span class="cal-prev-btn">{{ prevText | raw }}</span>
+									</a>
+							</div>
+					{%- endif %}
+
+					{% for i in range(0, numberOfMonth-1) -%}
+							{% if not loop.first %}
+									{% set time = time|date_modify('+1 month') %}
+							{% endif %}
+
+							{% set year = time.format('Y') %}
+							{% set month = time.format('m') %}
+
+			{% if app.debug %}
+					<!-- // DEBUG
+							loop.index:         {{ loop.index }}
+							time:               {{ time.format('Y-m-d H:i:s') }}
+							year:               {{ year }}
+							month:              {{ month }}
+					-->
+			{% endif %}
+
+							<div class="cal-month{% if loop.first %} cal-group-first{% endif %}{% if loop.last %} cal-group-last{% endif %}" data-year="{{ year }}" data-month="{{ month }}">
+									<table>
+											<thead>
+													<tr>
+															<th colspan="7" class="center cal-month-title">
+																	{{ monthnames[month].full }}
+															</th>
+													</tr>
+													<tr>
+															{% for dow in range(0, 6) %}
+																	{% set day = (dow + firstDay) % 7 %}
+																	<th><span title="{{ daynames[day].full }}">{{ daynames[day].short }}</span></th>
+															{% endfor %}
+													</tr>
+											</thead>
+											<tbody>
+													{% set daysInMonth = time.format('t') %}
+													{% set startDow = (time.format('F 1\\s\\t Y')|date('w')) %}
+													{% set dow = startDow %}
+													{% set pos = (7 + (startDow - firstDay)) % 7 %}
+													<tr class="cal-week">
+															{% for dom in range(1,daysInMonth) -%}
+																	{#
+																			TODO
+																			- disable days before today in calendar
+																			-
+																	#}{#
+																	{% set dom_date_s = "%d-%02d-%02d"|format(year, month, dom) %}
+																	{% set dom_date = date(dom_date_s) %}
+																	{% set dom_id = "cal_" ~ ("%d%02d%02d"|format(year, month, dom)) %}
+
+																	{% set cal_day_classes = (
+																			'cal-day'
+																			~ (dom_date < today ? ' cal-unselectable' : '')
+																			~ ((pos + firstDay + 6) % 7 >= 5 ? ' cal-weekend' : '')
+																			~ (data[dom_date_s] is defined ? ' cal-day-data' : '')
+																	) %}
+
+																	{% if loop.first and pos > 0 -%}
+																			{% if not spanOtherMonth %}
+																					{% for _dom in range(1, pos) -%}
+																							<td class="cal-day"><span>&nbsp;</span></td>
+																					{%- endfor %}
+																			{% else %}
+																					<td colspan="{{ pos }}"><span>&nbsp;</span></td>
+																			{% endif %}
+																	{%- endif %}
+
+																	<td id="{{ dom_id }}" class="{{ cal_day_classes }}" data-date="{{ dom_date_s }}" data-handler="selectDay" data-event="click">
+																			<a{% if data[dom_date_s] is defined %} title="{{ data[dom_date_s] }}"{% endif %}>
+																					{{- dom -}}
+																			</a>
+																	</td>
+
+																	{% if loop.last and pos != 6 -%}
+																			{% if not spanOtherMonth %}
+																					{% for _dom in range(1, 6 - pos) -%}
+																							<td class="cal-day"><span>&nbsp;</span></td>
+																					{%- endfor %}
+																			{% else %}
+																					<td colspan="{{ 6 - pos }}"><span>&nbsp;</span></td>
+																			{% endif %}
+																	{%- endif %}
+
+																	{% if pos == 6 and not loop.last %}
+																			{% set pos = 0 %}
+																			{% set dow = firstDay %}
+													</tr>
+													<tr class="cal-week">
+																	{% else %}
+																			{% set dow = (dow + 1) % 7 %}
+																			{% set pos = pos + 1 %}
+																	{% endif %}
+															{%- endfor %}
+													</tr>
+											</tbody>
+									</table>
+							</div>
+					{%- endfor %}
+					{% if not disableNavigation -%}
+							<div class="cal-btn">
+									<a class="cal-next" title="">
+											<span class="cal-next-btn">{{ nextText | raw }}</span>
+									</a>
+							</div>
+					{%- endif %}
+			</div>
+			#}
+			{#<div class="container">
+          {% if num > 0 %}
+						{% if num > 1 %}
+                        <div class="alert alert-warning" role="alert">
+                            'Tienes '.{{ num }}.' eventos en los próximos 2 días.'
+                        </div>
+						{% else %}
+                        <div class="alert alert-warning" role="alert">
+                            'Tienes '.{{ num }}.' evento en los próximos 2 días.'
+                        </div>
+						{% endif %}
+					{% endif %}
+					{% set c = 0 %}
+            {% for day, value in session.Lunes %}
+					    {% c = c + 1 %}
+					    {% if c < 1 %}
+						   	{% date = new dateTime(value["fecha"])
+						    format = date -> format('d-m-Y')
+						    %}
+						    <h3>{{ strings["Week of Monday "]. format }}</h3>
+					    {% endif %} 
+            {% endfor %}
+				{% if session.semana - 1 == 0 
+					semanaA = 52
+				else
+					semanaA = session.semana - 1
+				endif
+				  contE = session.contador - 1
+				%}
+				  
+				<div class="row top-buffer">
+				<table>
+					<thead>
+					<tr>
+					<th align="left" width=400>
+						<form method="post" action="../Functions/Acceso.php" role="login">
+						  <input type="text" name="username" value="{{ session.login }}" hidden=true>
+                          <input type="password" name="password" value="{{ session.pass }}" hidden=true>
+						  <input type="text" name="IDIOMA" value="{{ session.IDIOMA }}" hidden=true>
+						  <input type="number" name="wk" value="{{ semanaA }}" hidden=true>
+						  <input type="number" name="contador" value="{{ contE }}" hidden=true>
+						  <input type="number" name="curso" value="0" hidden=true>
+						  <button type="submit" name="accion" class="btn btn-lg btn-primary" value="Login">{{ strings["Anterior Semana"] }}</button>
+						</form>
+					</th>
+					<th width=250>
+						<form method="post" action="../Functions/Acceso.php" role="login">
+							<input type="text" name="username" value="{{ session.login }}" hidden=true>
+							<input type="password" name="password" value="{{ session.pass }}" hidden=true>
+							<input type="text" name="IDIOMA" value="{{ session.IDIOMA }}" hidden=true>
+							<input type="number" name="wk" value="{{ session.semana }}" hidden=true>
+							<input type="number" name="contador" value="{{ session.contador }}" hidden=true>
+							<select name="curso">
+								<option value=-1></option>
+								{% for curso in session.misCursos %}
+									<option value="{{ curso['idCurso'] }}">{{ curso['nombreCurso'] }}</option>
+								{% endfor %}
+							</select>
+							<button type="submit" name="accion" class="btn btn-lg btn-primary" value="Login">{{ strings["Filtrar"] }}</button>
+						</form>
+					</th>
+					<th width=400>
+						<a href='../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}'>
+							<button type="button" class="btn btn-lg btn-primary">{{ strings['Crear'] }}</button>
+						</a>
+					</th>
+						{% if session.semana +1 == 53
+						  semanaN = 1
+						else
+						  semanaN = session.semana +1
+						endif
+						contA = session.contador +1
+						%}
+					<th>
+						<form method="post" action="../Functions/Acceso.php" role="login">
+							<input type="text" name="username" value="{{ session.login }}" hidden=true>
+							<input type="password" name="password" value="{{ session.pass }}" hidden=true>
+							<input type="text" name="IDIOMA" value="{{ session.IDIOMA }}" hidden=true>
+							<input type="number" name="wk" value="{{ semanaN }}" hidden=true>
+							<input type="number" name="contador" value="{{ contA }}" hidden=true>
+							<input type="number" name="curso" value="0" hidden=true>
+							<button type="submit" name="accion" class="btn btn-lg btn-primary" value="Login">{{ strings["Próxima Semana"] }}</button>
+						</form>
+					</th>   
+					</tr>
+				  </thead>
+				</table>
+				</div>
+				
+				<div class="row top-buffer">
+				<table class="table">
+				  <thead>
+					{%
+					array_date = getDate()
+					date = array_date['year']."-". array_date['mon']."-". array_date['mday']
+					dia = date('N', strtotime(date))
+					cont = session.contador
+					
+					if cont < 0
+						dias = cont * 7
+						string = (string) dias
+						stringOK = string . ' day'
+						date = date('Y-m-d', strtotime( stringOK , strtotime(date) ))
+					else
+						if cont > 0
+							dias = cont * 7
+							string = (string) dias
+							stringOK = '+' . string . ' day'
+							date = date('Y-m-d', strtotime( stringOK , strtotime(date) ))
+						endif
+					endif
+				
+					if dia == 1
+						lunes = date
+						martes = date('Y-m-d', strtotime( '+1 day' , strtotime(date) ))
+						miercoles = date('Y-m-d', strtotime( '+2 day' , strtotime(date) ))
+						jueves = date('Y-m-d', strtotime( '+3 day' , strtotime(date) ))
+						viernes = date('Y-m-d', strtotime( '+4 day' , strtotime(date) ))
+						sabado = date('Y-m-d', strtotime( '+5 day' , strtotime(date) ))
+						domingo = date('Y-m-d', strtotime( '+6 day' , strtotime(date) ))
+					else
+						if dia == 2					
+							lunes = date('Y-m-d', strtotime( '-1 day' , strtotime(date) ))
+							martes = date
+							miercoles = date('Y-m-d', strtotime( '+1 day' , strtotime(date) ))
+							jueves = date('Y-m-d', strtotime( '+2 day' , strtotime(date) ))
+							viernes = date('Y-m-d', strtotime( '+3 day' , strtotime(date) ))
+							sabado = date('Y-m-d', strtotime( '+4 day' , strtotime(date) ))
+							domingo = date('Y-m-d', strtotime( '+5 day' , strtotime(date) ))
+						else
+							if dia == 3					
+								lunes = date('Y-m-d', strtotime( '-2 day' , strtotime(date) ))
+								martes = date('Y-m-d', strtotime( '-1 day' , strtotime(date) ))
+								miercoles = date
+								jueves = date('Y-m-d', strtotime( '+1 day' , strtotime(date) ))
+								viernes = date('Y-m-d', strtotime( '+2 day' , strtotime(date) ))
+								sabado = date('Y-m-d', strtotime( '+3 day' , strtotime(date) ))
+								domingo = date('Y-m-d', strtotime( '+4 day' , strtotime(date) ))
+							else
+								if dia == 4
+									lunes = date('Y-m-d', strtotime( '-3 day' , strtotime(date) ))
+									martes = date('Y-m-d', strtotime( '-2 day' , strtotime(date) ))
+									miercoles = date('Y-m-d', strtotime( '-1 day' , strtotime(date) ))
+									jueves = date
+									viernes = date('Y-m-d', strtotime( '+1 day' , strtotime(date) ))
+									sabado = date('Y-m-d', strtotime( '+2 day' , strtotime(date) ))
+								    domingo = date('Y-m-d', strtotime( '+3 day' , strtotime(date) ))
+								else
+									if dia == 5
+										lunes = date('Y-m-d', strtotime( '-4 day' , strtotime(date) ))
+										martes = date('Y-m-d', strtotime( '-3 day' , strtotime(date) ))
+										miercoles = date('Y-m-d', strtotime( '-2 day' , strtotime(date) ))
+										jueves = date('Y-m-d', strtotime( '-1 day' , strtotime(date) ))
+										viernes = date
+										sabado = date('Y-m-d', strtotime( '+1 day' , strtotime(date) ))
+										domingo = date('Y-m-d', strtotime( '+2 day' , strtotime(date) ))
+									else
+										if dia == 6
+											lunes = date('Y-m-d', strtotime( '-5 day' , strtotime(date) ))
+											martes = date('Y-m-d', strtotime( '-4 day' , strtotime(date) ))
+											miercoles = date('Y-m-d', strtotime( '-3 day' , strtotime(date) ))
+											jueves = date('Y-m-d', strtotime( '-2 day' , strtotime(date) ))
+											viernes = date('Y-m-d', strtotime( '-1 day' , strtotime(date) ))
+											sabado = date
+											domingo = date('Y-m-d', strtotime( '+1 day' , strtotime(date) ))
+										else
+											if dia == 7											
+												lunes = date('Y-m-d', strtotime( '-6 day' , strtotime(date) ))
+												martes = date('Y-m-d', strtotime( '-5 day' , strtotime(date) ))
+												miercoles = date('Y-m-d', strtotime( '-4 day' , strtotime(date) ))
+												jueves = date('Y-m-d', strtotime( '-3 day' , strtotime(date) ))
+												viernes = date('Y-m-d', strtotime( '-2 day' , strtotime(date) ))
+												sabado = date('Y-m-d', strtotime( '-1 day' , strtotime(date) ))
+											  domingo = date
+											endif
+										endif
+									endif
+								endif
+							endif
+						endif
+					endif
+					%}
+					<tr>
+					  <th><a style="font-size:15px;" href="../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}&fecha={{ lunes }}">{{ lunes }}</a></th>
+					  <th><a style="font-size:15px;" href="../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}&fecha={{ martes }}">{{ martes }}</a></th>
+					  <th><a style="font-size:15px;" href="../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}&fecha={{ miercoles }}">{{ miercoles }}</a></th>
+					  <th><a style="font-size:15px;" href="../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}&fecha={{ jueves }}">{{ jueves }}</a></th>
+					  <th><a style="font-size:15px;" href="../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}&fecha={{ viernes }}">{{ viernes }}</a></th>
+					  <th><a style="font-size:15px;" href="../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}&fecha={{ sabado }}">{{ sabado }}</a></th>
+					  <th><a style="font-size:15px;" href="../Controllers/ALERTA_Controller.php?accion={{ strings['Crear'] }}&fecha={{ domingo }}">{{ domingo }}</a></th>
+					</tr>
+					<tr>
+					  <th>{{ strings['Monday'] }}</th>
+					  <th>{{ strings['Tuesday'] }}</th>
+					  <th>{{ strings['Wednesday'] }}</th>
+					  <th>{{ strings['Thursday'] }}</th>
+					  <th>{{ strings['Friday'] }}</th>
+					  <th>{{ strings['Saturday'] }}</th>
+					  <th>{{ strings['Sunday'] }}</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+						<td width=50 bgcolor=#C0C0C0>
+					    {% for day => value in session.Lunes %}
+								<li>{{ value["horaInicio"]." - ". value["horaFin"] }}</li>
+							    {% if value["nombreAsignatura"]
+										if value["asuntoEntrega"] %}
+										<div style="color: blue;">
+											<li><b><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] . '&accion=' . strings['Añadir'] }}'>{{ value["asuntoEntrega"]."\n" }}</a></b></li>
+											<li><a>{{ value["nombreCurso"]."\n" }}</a></li>
+										</div>
+										{% endif %}
+                                {% else %}
+										<div style="color: orange;">
+											<li><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] }}&idAlerta={{ value["idAlerta"] }}&accion={{ strings['Modificar'] }}'><font color="#088A4B">{{ value["asuntoAlerta"] }}</font></a></li>
+										</div>	
+                                {% endif %}
+							  <hr>
+						{% endfor %}
+						</td>
+						<td width=50>
+						    {% for day => value in session.Martes %}
+								<li>{{ value["horaInicio"]." - ". value["horaFin"] }}</li>
+							    {% if value["nombreAsignatura"]
+										if value["asuntoEntrega"] %}
+										<div style="color: blue;">
+											<li><b><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] . '&accion=' . strings['Añadir'] }}'>{{ value["asuntoEntrega"]."\n" }}</a></b></li>
+											<li><a>{{ value["nombreCurso"]."\n" }}</a></li>
+										</div>
+										{% endif %}
+                                {% else %}
+										<div style="color: orange;">
+											<li><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] }}&idAlerta={{ value["idAlerta"] }}&accion={{ strings['Modificar'] }}'><font color="#088A4B">{{ value["asuntoAlerta"] }}</font></a></li>
+										</div>	
+                                {% endif %}
+							  <hr>
+						{% endfor %}
+						</td>
+						<td width=50 bgcolor=#C0C0C0>
+						    {% for day => value in session.Miercoles %}
+								<li>{{ value["horaInicio"]." - ". value["horaFin"] }}</li>
+							    {% if value["nombreAsignatura"]
+										if value["asuntoEntrega"] %}
+										<div style="color: blue;">
+											<li><b><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] . '&accion=' . strings['Añadir'] }}'>{{ value["asuntoEntrega"]."\n" }}</a></b></li>
+											<li><a>{{ value["nombreCurso"]."\n" }}</a></li>
+										</div>
+										{% endif %}
+                                {% else %}
+										<div style="color: orange;">
+											<li><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] }}&idAlerta={{ value["idAlerta"] }}&accion={{ strings['Modificar'] }}'><font color="#088A4B">{{ value["asuntoAlerta"] }}</font></a></li>
+										</div>	
+                                {% endif %}
+							    <hr>
+						    {% endfor %}
+						</td>
+						<td width=50>
+						    {% for day => value in session.Jueves %}
+								<li>{{ value["horaInicio"]." - ". value["horaFin"] }}</li>
+							    {% if value["nombreAsignatura"]
+										if value["asuntoEntrega"] %}
+										<div style="color: blue;">
+											<li><b><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] . '&accion=' . strings['Añadir'] }}'>{{ value["asuntoEntrega"]."\n" }}</a></b></li>
+											<li><a>{{ value["nombreCurso"]."\n" }}</a></li>
+										</div>
+										{% endif %}
+                                {% else %}
+										<div style="color: orange;">
+											<li><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] }}&idAlerta={{ value["idAlerta"] }}&accion={{ strings['Modificar'] }}'><font color="#088A4B">{{ value["asuntoAlerta"] }}</font></a></li>
+										</div>	
+                                {% endif %}
+							  <hr>
+						    {% endfor %}
+						</td>
+						<td width=50 bgcolor=#C0C0C0>
+						    {% for day => value in session.Viernes %}
+								<li>{{ value["horaInicio"]." - ". value["horaFin"] }}</li>
+							    {% if value["nombreAsignatura"]
+										if value["asuntoEntrega"] %}
+										<div style="color: blue;">
+											<li><b><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] . '&accion=' . strings['Añadir'] }}'>{{ value["asuntoEntrega"]."\n" }}</a></b></li>
+											<li><a>{{ value["nombreCurso"]."\n" }}</a></li>
+										</div>
+										{% endif %}
+                                {% else %}
+										<div style="color: orange;">
+											<li><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] }}&idAlerta={{ value["idAlerta"] }}&accion={{ strings['Modificar'] }}'><font color="#088A4B">{{ value["asuntoAlerta"] }}</font></a></li>
+										</div>	
+                                {% endif %}
+							  <hr>
+						    {% endfor %}
+						</td>
+						<td width=50>
+						    {% for day => value in session.Sabado %}
+								<li>{{ value["horaInicio"]." - ". value["horaFin"] }}</li>
+							    {% if value["nombreAsignatura"]
+										if value["asuntoEntrega"] %}
+										<div style="color: blue;">
+											<li><b><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] . '&accion=' . strings['Añadir'] }}'>{{ value["asuntoEntrega"]."\n" }}</a></b></li>
+											<li><a>{{ value["nombreCurso"]."\n" }}</a></li>
+										</div>
+										{% endif %}
+                                {% else %}
+										<div style="color: orange;">
+											<li><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] }}&idAlerta={{ value["idAlerta"] }}&accion={{ strings['Modificar'] }}'><font color="#088A4B">{{ value["asuntoAlerta"] }}</font></a></li>
+										</div>	
+                                {% endif %}
+							  <hr>
+						    {% endfor %}
+						</td>
+						<td width=50 bgcolor=#C0C0C0>
+						    {% for day => value in session.Domingo %}
+								<li>{{ value["horaInicio"]." - ". value["horaFin"] }}</li>
+							    {% if value["nombreAsignatura"]
+										if value["asuntoEntrega"] %}
+										<div style="color: blue;">
+											<li><b><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] . '&accion=' . strings['Añadir'] }}'>{{ value["asuntoEntrega"]."\n" }}</a></b></li>
+											<li><a>{{ value["nombreCurso"]."\n" }}</a></li>
+										</div>
+										{% endif %}
+                                {% else %}
+										<div style="color: orange;">
+											<li><a href='../Controllers/ALERTA_Controller.php?idCalendarioHoras={{ value["idCalendarioHoras"] }}&idAlerta={{ value["idAlerta"] }}&accion={{ strings['Modificar'] }}'><font color="#088A4B">{{ value["asuntoAlerta"] }}</font></a></li>
+										</div>	
+                                {% endif %}
+							  <hr>
+						    {% endfor %}
+						</td>
+					  </tr>
+				  </tbody>
+				</table>
+				</div>
+			</div>#}
+      {% endif %}
+{% endblock %}

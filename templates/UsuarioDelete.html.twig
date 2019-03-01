@@ -1,0 +1,65 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Usuario Delete{% endblock %}
+{% block body %}
+	<div class="container" >
+            <form  id="form" name="form" action='USUARIO_Controller.php?user=user'  method='post'   enctype="multipart/form-data">
+                <div class="form-group" >
+                    <label class="control-label" >{{ strings['Eliminar Usuario'] }}</label><br>
+                </div>
+               
+                
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['username'] }}</label><br>
+                    <input class="form" id="username" name="username" size="25" type="text" readonly="true" value="{{ valores['username'] }}">
+                </div>
+                
+                 <div class="form-group">
+                    <input type='hidden' class="form" id="username" name="password" size="25" type="text" readonly="true" value="{{ valores['password'] }}">
+                </div>
+				
+				<div class="form-group">
+                    <label class="control-label" >{{ strings['tipoUsuario'] }}</label><br>
+                    <input class="form" id="tipoUsuario" name="tipoUsuario" size="10" type="int" readonly="true" value="{{ valores['tipoUsuario'] }}">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['nombre'] }}</label><br>
+                    <input class="form" id="nombre" name="nombre" size="50" type="text" readonly="true" value="{{ valores['nombre'] }}">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['apellidos'] }}</label><br>
+                    <input class="form" id="apellidos" name="apellidos" size="50" type="text" readonly="true" value="{{ valores['apellidos'] }}">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['dni'] }}</label><br>
+                    <input class="form" id="dni" name="dni" size="9" type="text" readonly="true" value="{{ valores['dni'] }}">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['fechaNac'] }}</label><br>
+                    <input class="form" id="fechaNac" name="fechaNac" type="date" readonly="true" value="{{ valores['fechaNac'] }}">
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['niu'] }}</label><br>
+                    <input class="form" id="niu" name="niu" size="20" type="text" readonly="true" value="{{ valores['niu'] }}">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" >{{ strings['email'] }}</label><br>
+                    <input class="form" id="email" name="email" size="50" type="email" readonly="true" value="{{ valores['email'] }}">
+                </div>
+
+
+                <br>
+
+                <input type = 'submit' name = 'accion' value = '{{ strings['Borrar'] }}'>
+                <a class="form-link" href='{{ volver }} '>{{ strings['Volver'] }} </a>
+            </form>
+
+        </div>
+{% endblock %}

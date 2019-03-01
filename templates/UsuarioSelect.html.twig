@@ -1,0 +1,13 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Usuario Select{% endblock %}
+{% block body %}
+	<div class="container">
+            <div align='center'>
+                <a href='USUARIO_Controller.php?accion={{ strings['Seleccionar'] }}&amp;user=admin'><img src="../img/admin.jpg" width="54px" height="54px">{{ strings['Administrador'] }}</a>
+            </div>
+            <div align='right'>
+                <a class="form-link" href='{{ volver }} '>{{ strings['Volver'] }} </a>
+            </div>
+        </div>
+{% endblock %}

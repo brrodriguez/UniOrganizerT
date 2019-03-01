@@ -1,0 +1,74 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Curso Import{% endblock %}
+{% block body %}
+	<form method="POST" id="frmCursoImportar" action="../Controllers/CURSO_Controller.php?accion=importar">
+				<div class="container">			
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">{{ strings['nombreCurso'] }}*</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="nombreCurso" id="example-text-input" required>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">{{ strings['descripcionCurso'] }}*</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="descripcionCurso" id="example-text-input" required>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<div class="col-10">
+							<input type="hidden" class="form-control" id="example-text-input" name="idCalendario" size="10" type="text" required="true" value="{{ idCalendario }}" readonly="true"/>
+						</div>
+					</div>
+					<br>
+					<h4><b>{{ strings['seleccionaCurso'] }}*</b></h4>
+					<select name="curso">
+						<option value="0"></option>
+						<option value="1">1 Curso</option>
+						<option value="2">2 Curso</option>
+						<option value="3">3 Curso</option>
+						<option value="4">4 Curso</option>
+					</select>
+					<br><br>
+					<button type="submit" class="btn btn-primary">{{ strings['Guardar'] }}</button>
+					<a class="form-link" href="{{ volver }}">{{ strings['Volver'] }}</a>
+				</div>
+			</form>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var counter = 0;
+
+                $("#addrow").on("click", function () {
+
+                    var newRow = $("<tr>");
+                    var cols = "";
+
+                    //cols += '<td>' + counter + '</td>';
+                    cols += '<td><select class = "form-control" id = "sel1" name = "select"><?php echo $this->asignaturas['selectasignaturas'];?></select></td>';
+
+                    cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Eliminar Asignatura"></td>';
+                    newRow.append(cols);
+                    $("#tblAsignaturas").append(newRow);
+                    counter++;
+                });
+
+
+
+                $("#tblAsignaturas").on("click", ".ibtnDel", function (event) {
+                    $(this).closest("tr").remove();
+                    counter -= 1
+                });
+
+                $("#savefrm").on("click", function () {
+                    document.getElementById('frmCursoImportar').submit();
+
+                });
+
+
+            });
+        </script>
+{% endblock %}
