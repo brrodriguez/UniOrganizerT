@@ -41,16 +41,6 @@ CREATE TABLE `asignatura` (
   `nombreAsignatura` varchar(200) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `asignatura`
---
-
-INSERT INTO `asignatura` (`idAsignatura`, `nombreAsignatura`) VALUES
-(1, 'Asignatura de prueba 1'),
-(2, 'Asignatura de prueba 2'),
-(3, 'Asignatura de prueba 3'),
-(4, 'asignatura de prueba 4');
-
 -- --------------------------------------------------------
 
 --
@@ -76,11 +66,11 @@ INSERT INTO `pagina` (`idPagina`, `linkPagina`, `nombrePagina`) VALUES
 (6, '../templates/UsuarioShow.html.twig', 'USUARIO SHOW'),
 (100, '../templates/AsignaturaShowall.html.twig', 'Asignatura SHOWALL'),
 (101, '../templates/AsignaturaDelete.html.twig', 'Asignatura DELETE'),
-(150, '../templates/CursoShowall.html.twig', 'Curso SHOW ALL'),
-(151, '../templates/CursoAdd.html.twig', 'Curso ADD'),
-(152, '../templates/CursoEdit.html.twig', 'Curso EDIT'),
-(153, '../templates/CursoDelete.html.twig', 'Curso DELETE'),
-(154, '../templates/CursoFilter.html.twig', 'Curso FILTER'),
+(150, '../templates/CalendarioShowall.html.twig', 'Calendario SHOW ALL'),
+(151, '../templates/CalendarioAdd.html.twig', 'Calendario ADD'),
+(152, '../templates/CalendarioEdit.html.twig', 'Calendario EDIT'),
+(153, '../templates/CalendarioDelete.html.twig', 'Calendario DELETE'),
+(154, '../templates/CalendarioFilter.html.twig', 'Calendario FILTER'),
 (200, '../templates/AlertaAdd.html.twig', 'Alerta ADD'),
 (201, '../templates/AlertaDelete.html.twig', 'Alerta DELETE'),
 (202, '../templates/AlertaEdit.html.twig', 'Alerta EDIT'),
@@ -115,11 +105,11 @@ INSERT INTO `funcionalidad` (`idFuncionalidad`, `nombreFuncionalidad`, `categori
 (6, 'Ver Usuario', 'Gestion Usuarios'),
 (100, 'Listar Asignaturas', 'Gestion Asignaturas'),
 (101, 'Borrar Asignatura', 'Gestion Asignaturas'),
-(150, 'Listar Cursos', 'Gestion Cursos'),
-(151, 'Añadir Curso', 'Gestion Cursos'),
-(152, 'Editar Curso', 'Gestion Cursos'),
-(153, 'Borrar Curso', 'Gestion Cursos'),
-(154, 'Filtrar Cursos', 'Gestion Cursos'),
+(150, 'Listar Calendarios', 'Gestion Calendarios'),
+(151, 'Añadir Calendario', 'Gestion Calendarios'),
+(152, 'Editar Calendario', 'Gestion Calendarios'),
+(153, 'Borrar Calendario', 'Gestion Calendarios'),
+(154, 'Filtrar Calendarios', 'Gestion Calendarios'),
 (200, 'Insertar Alerta', 'Gestion Alertas'),
 (201, 'Baja Alerta', 'Gestion Alertas'),
 (202, 'Modificar Alerta', 'Gestion Alertas'),
@@ -221,25 +211,15 @@ INSERT INTO `funcionalidad_rol` (`idFuncionalidad`, `idRol`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `curso`
+-- Estructura de tabla para la tabla `calendario`
 --
 
-CREATE TABLE `curso` (
-  `idCurso` int(10) NOT NULL,
-  `nombreCurso` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
-  `descripcionCurso` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+CREATE TABLE `calendario` (
+  `idCalendario` int(10) NOT NULL,
+  `nombreCalendario` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
+  `descripcionCalendario` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `username` varchar(20) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `curso`
---
-
-INSERT INTO `curso` (`idCurso`, `nombreCurso`, `descripcionCurso`, `username`) VALUES
-(1, 'Curso de prueba 1', 'Curso de preuba', 'admin'),
-(2, 'Curso de prueba 2', 'Curso de prueba', 'bruno'),
-(3, 'Curso de prueba 3', 'Curso de preuba', 'admin2'),
-(4, 'Curso de prueba 4', 'Curso de prueba', 'bruno');
 
 -- --------------------------------------------------------
 
@@ -257,16 +237,6 @@ CREATE TABLE `alerta` (
   `idEvento` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `alerta`
---
-
-INSERT INTO `alerta` (`idAlerta`, `asuntoAlerta`, `descripcionAlerta`, `dia`, `horaInicio`, `horaFin`, `idEvento`) VALUES
-(1, 'Alerta de prueba', 'Alerta de prueba', '2018-11-2', '10:00', '11:00', 1),
-(2, 'Alerta examen', 'Alerta de examen', '2018-11-3', '10:00', '11:00', 2),
-(3, 'Alerta de prueba 2', 'Alerta', '2018-11-5', '09:00', '10:00', 3),
-(4, 'Alerta de prueba 3', 'Alerta de prueba', '2018-11-8', '12:00', '13:00', 4);
-
 -- --------------------------------------------------------
 
 --
@@ -283,36 +253,16 @@ CREATE TABLE `evento` (
   `idAsignatura` int(10)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `evento`
---
-
-INSERT INTO `evento` (`idEvento`, `asuntoEvento`, `descripcionEvento`, `dia`, `horaInicio`, `horaFin`, `idAsignatura`) VALUES
-(1, 'Evento de prueba', 'Evento de prueba','2018-11-5', '10:00', '11:00', 1),
-(2, 'Examen', 'Examen','2018-11-6', '10:00', '11:00', 2),
-(3, 'Evento de prueba 2', 'Evento de prueba 2','2018-11-7', '09:00', '10:00', NULL),
-(4, 'Evento de prueba 3', 'Evento de prueba 3','2018-11-8', '12:00', '13:00', NULL);
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `curso_evento`
+-- Estructura de tabla para la tabla `calendario_evento`
 --
 
-CREATE TABLE `curso_evento` (
-  `idCurso` int(10) NOT NULL,
+CREATE TABLE `calendario_evento` (
+  `idCalendario` int(10) NOT NULL,
   `idEvento` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `evento`
---
-
-INSERT INTO `curso_evento` (`idCurso`, `idEvento`) VALUES
-(2, 1),
-(2, 2),
-(2, 3),
-(2, 4);
 
 -- --------------------------------------------------------
 
@@ -393,10 +343,10 @@ INSERT INTO `usuario_rol` (`username`, `idRol`) VALUES
 --
 
 --
--- Indices de la tabla `curso`
+-- Indices de la tabla `calendario`
 --
-ALTER TABLE `curso`
-  ADD PRIMARY KEY (`idCurso`),
+ALTER TABLE `calendario`
+  ADD PRIMARY KEY (`idCalendario`),
   ADD KEY `username` (`username`);
 
 --
@@ -470,11 +420,11 @@ ALTER TABLE `usuario_rol`
   ADD KEY `usuario_rol_ibfk_2` (`idRol`);
   
 --
--- Indices de la tabla `curso_evento`
+-- Indices de la tabla `calendario_evento`
 --
-ALTER TABLE `curso_evento`
- ADD PRIMARY KEY(`idCurso`, `idEvento`),
- ADD KEY `idCurso` (`idCurso`),
+ALTER TABLE `calendario_evento`
+ ADD PRIMARY KEY(`idCalendario`, `idEvento`),
+ ADD KEY `idCalendario` (`idCalendario`),
  ADD KEY `idEvento` (`idEvento`);
  
 --
@@ -518,10 +468,10 @@ ALTER TABLE `rol`
   MODIFY `idRol` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
   
 --
--- AUTO_INCREMENT de la tabla `curso`
+-- AUTO_INCREMENT de la tabla `calendario`
 --
-ALTER TABLE `curso`
-  MODIFY `idCurso` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `calendario`
+  MODIFY `idCalendario` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
   
 --
 -- AUTO_INCREMENT de la tabla `usuario_rol`
@@ -549,17 +499,17 @@ ALTER TABLE `funcionalidad_rol`
 
   
 --
--- Filtros para la tabla `curso_evento`
+-- Filtros para la tabla `calendario_evento`
 --
-ALTER TABLE `curso_evento`
-  ADD CONSTRAINT `curso_evento_ibfk_1` FOREIGN KEY (`idCurso`) REFERENCES `curso` (`idCurso`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `curso_evento_ibfk_2` FOREIGN KEY (`idEvento`) REFERENCES `evento` (`idEvento`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `calendario_evento`
+  ADD CONSTRAINT `calendario_evento_ibfk_1` FOREIGN KEY (`idCalendario`) REFERENCES `calendario` (`idCalendario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `calendario_evento_ibfk_2` FOREIGN KEY (`idEvento`) REFERENCES `evento` (`idEvento`) ON DELETE CASCADE ON UPDATE CASCADE;
   
 --
--- Filtros para la tabla `curso`
+-- Filtros para la tabla `calendario`
 --
-ALTER TABLE `curso`
-  ADD CONSTRAINT `curso_ibfk_2` FOREIGN KEY (`username`) REFERENCES `usuario` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `calendario`
+  ADD CONSTRAINT `calendario_ibfk_2` FOREIGN KEY (`username`) REFERENCES `usuario` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
   
 
 --

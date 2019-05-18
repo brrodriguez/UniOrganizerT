@@ -1,0 +1,166 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ strings['Crear Calendario'] }}{% endblock %}
+{% block body %}
+		<div class="row" style="clear:both;">
+			<div class="container">
+				<form method="POST" action="../Controllers/CALENDARIO_Controller.php?accion=insertar" id="frmCalendarioAsignaturas">
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">{{ strings['nombreCalendario'] }}*</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="nombreCalendario" id="example-text-input" required>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">{{ strings['descripcionCalendario'] }}*</label>
+						<div class="col-10">
+							<input class="form-control" type="text" name="descripcionCalendario" id="example-text-input" required>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<div class="col-10">
+							<input type="hidden" class="form-control" id="example-text-input" name="username" size="20" type="text" required="true" value="{{ username }}" readonly="true"/>
+						</div>
+					</div>
+
+					<input type="hidden" name="asignaturas" id="asignaturas" value="">
+
+					<div class="container" style="width:50%; float:left; display:block;">
+							
+							<h6><b>{{ strings['seleccionaAsig'] }}</b></h6><br>
+							<select id = "sel1" style="width:300px;" name = "sel1">{{ datos['selectasignaturas'] | raw }}</select>
+							<button type = "button" class = "btn btn-success" id = "addasig" style="margin-left:20px;">{{ strings['ImportarAsignatura'] }}</button>
+							<br><br>
+					</div>
+
+					<div class="container" style="width:50%; float:right; display:block;">	
+							
+							<h6><b>{{ strings['seleccionaCurso'] }}</b></h6><br>
+							<select id="curso" name="curso" style="width:300px;">
+								<option value="0"></option>
+								<option value="1">1 Curso</option>
+								<option value="2">2 Curso</option>
+								<option value="3">3 Curso</option>
+								<option value="4">4 Curso</option>
+							</select>
+							<button type = "button" class = "btn btn-success" id = "addcurso" style="margin-left:20px;">{{ strings['ImportarCurso'] }}</button>
+							<br><br>
+					</div>
+					<div class="container">
+						<table class = "table" id = "tblAsignaturas">
+							<thead class = "thead-dark">
+								<tr>
+									<th scope = "col" bgcolor="#C0C0C0">{{ strings['nombreAsignatura'] }}</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for valor in otros['asignaturas'] %}
+								<tr>
+									<th>{{ valor['nombreAsignatura'] }}</th>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+					<div class="container" style="clear:both; margin-left:20px;">
+						<button type="submit" class="btn btn-primary">{{ strings['crear'] }}</button>
+						<a class="form-link" href="{{ volver }}">{{ strings['Volver'] }}</a>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript">
+
+			var asignaturas = [];
+
+			var primerCurso = [];
+			{% for asig in primero %}
+				primerCurso.push('{{ asig }}')
+			{% endfor %}
+
+			var segundoCurso = [];
+			{% for asig in segundo %}
+				segundoCurso.push('{{ asig }}')
+			{% endfor %}
+
+			var tercerCurso = [];
+			{% for asig in tercero %}
+				tercerCurso.push('{{ asig }}')
+			{% endfor %}
+
+			var cuartoCurso = [];
+			{% for asig in cuarto %}
+				cuartoCurso.push('{{ asig }}')
+			{% endfor %}
+
+			$(document).ready(function () {
+				var counter = 0;
+				$("#addasig").on("click", function () {
+					var select = document.getElementById("sel1");
+					var selectText = select.options[select.selectedIndex].innerText;
+					asignaturas.push(selectText);
+					var newRow = $("<tr>");
+					var cols = "";
+
+					cols += '<td>' + selectText + '</td>';
+
+					newRow.append(cols);
+					$("#tblAsignaturas").append(newRow);
+					counter++;
+					document.getElementById("asignaturas").value = asignaturas;
+				});
+
+				$("#addcurso").on("click", function () {
+
+					var select = document.getElementById("curso");
+					var selectValue = select.options[select.selectedIndex].value;
+					var cols = "";
+					if(selectValue==1){
+						for (var k = 0; k < primerCurso.length; k++) {
+							asignaturas.push(primerCurso[k]);
+							cols += '<tr><td>' + primerCurso[k] + '</td></tr>';
+						}
+					}else{
+						if(selectValue==2){
+							for (var k = 0; k < segundoCurso.length; k++) {
+								asignaturas.push(segundoCurso[k]);
+								cols += '<tr><td>' + segundoCurso[k] + '</td></tr>';
+							}
+						}else{
+							if(selectValue==3){
+								for (var k = 0; k < tercerCurso.length; k++) {
+									asignaturas.push(tercerCurso[k]);
+									cols += '<tr><td>' + tercerCurso[k] + '</td></tr>';
+								}
+							}else{
+								if(selectValue==4){
+									for (var k = 0; k < cuartoCurso.length; k++) {
+										asignaturas.push(cuartoCurso[k]);
+										cols += '<tr><td>' + cuartoCurso[k] + '</td></tr>';
+									}
+								}
+							}
+						}
+					}
+					$("#tblAsignaturas").append(cols);
+					counter++;
+					document.getElementById("asignaturas").value = asignaturas;
+				});
+
+				$("#tblAsignaturas").on("click", ".ibtnDel", function (event) {
+					$(this).closest("tr").remove();
+					counter -= 1
+				});
+
+				$("#savefrm").on("click", function () {
+					document.getElementById('frmCalendarioAsignaturas').submit();
+
+				});
+
+			});
+			
+    	</script>
+{% endblock %}

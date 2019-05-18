@@ -1,0 +1,58 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ strings['Lista Calendarios'] }}{% endblock %}
+{% block body %}
+	<div class="row" style="clear:both;">
+		<div class="container">
+		<form method="POST" action="" id="frmCalendarios">
+			<ul class="nav">
+				{% if userTipo == 2 %}
+				<li style="margin-right:40px;margin-top:7px;">
+					<a href="?accion=vistainsertar"><img src="../img/add.png" width="40px" height="40px"> {{ strings['newcalendario'] }}</img></a>
+				</li><br>
+				{% endif %}
+				{% if userTipo == 1 %}
+				<li style="margin-right:40px;margin-top:7px;">
+					<a href="?accion=vistafiltrar"><img src="../img/filter2.png" width="40px" height="40px"> {{ strings['filtrar'] }}</img></a>
+				</li><br>
+				{% endif %}
+				<li style="margin-right:40px;">
+					<button type="submit" class="btn btn-white" onclick=this.form.action="../Controllers/CALENDARIO_Controller.php?accion=eliminar" style="font-size:15px;"><img src="../img/eliminar2.png" width="40px" height="40px">  {{ strings['eliminarSelec'] }}</img></button>
+				</li><br>
+			</ul><br>
+			
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col"></th>
+						<th scope="col">{{ strings['nombreCalendario2'] }}</th>
+						<th scope="col">{{ strings['descripcionCalendario2'] }}</th>
+						{% if userTipo == 1 %}
+						<th scope="col">{{ strings['username'] }}</th>
+						{% endif %}
+						<th scope="col"></th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+		
+		{% for valor in datos %}
+					<tr>
+						<th><input type="checkbox" name="eliminar[]" value="{{ valor['0'] }}"></th>
+						<th><a href="?accion=vistamodificar&amp;id={{ valor['0'] }}">{{ valor['1'] }}</a></th>
+						<td>{{ valor['2']}}</td>
+						{% if userTipo == 1 %}
+						<td>{{ valor['3'] }}</td>
+						{% endif %}		
+						<td><a href="?accion=vistamodificar&amp;id={{ valor['0'] }}"><img src="../img/modify.png" width="40px" height="40px"> {{ strings['calendariomodificar'] }}</img></a></td>
+						<td><a href="javascript:;" onclick="alert('CALENDARIO_Controller.php?accion=eliminar&amp;id={{ valor['0'] }}')"><img src="../img/Delete.png" width="40px" height="40px"> {{ strings['Borrar'] }}</img></a></td>
+					</tr>
+		{% endfor %}
+				</tbody>
+			</table>
+		</form>
+		</div>
+	</div>
+{% endblock %}

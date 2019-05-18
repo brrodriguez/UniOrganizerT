@@ -1,45 +1,52 @@
 {% extends "layout.html.twig" %}
 
-{% block title %}Usuario Showall{% endblock %}
+{% block title %}{{ strings['Lista Usuarios'] }}{% endblock %}
 {% block body %}
-	<div class="container">
-            <div class="container">
-                <div align='center'>
-					<a href='USUARIO_Controller.php?accion={{ strings['Insertar'] }}&amp;user=admin'><img src="../img/admin.jpg" width="54px" height="54px">{{ strings['addAdministrador'] }}</a>
-					
-         
+	    <div class="row" style="clear:both;">
+			<div class="container">
+            <form method="POST" action="" id="frmAlertas">
+                <div align="center" >
+                    <ul class="nav">
+                        <li style="margin-right:40px;margin-top:7px;">
+                            <a href='USUARIO_Controller.php?accion={{ strings['Insertar'] }}&amp;user=admin'><img src="../img/admin.jpg" width="40px" height="40px">{{ strings['addAdministrador'] }}</a>
+                        </li>
+                        <li style="margin-right:40px;">
+                            <button type="submit" class="btn btn-white" onclick=this.form.action="../Controllers/USUARIO_Controller.php?accion={{ strings['Borrar'] }}" style="font-size:15px;"><img src="../img/eliminar2.png" width="40px" height="40px">  {{ strings['eliminarSelec'] }}</img></button>
+                        </li><br>
+                    </ul><br>
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
+                                <th scope="col"></th>
                                 {% for titulo in lista %}
-                                    <th>
+                                    <th scope="col">
                                     {{ strings[titulo] }}
                                     </th>
                                 {% endfor %}
+                                <th scope="col"></th>
+					            <th scope="col"></th>
                             </tr>
-                         </thead>
+                        </thead>
                         <tbody>
                                 {% for dato in datos %}
                                     <tr>
-                                    {% for clave, valor in dato %}
-                                        {% for key in lista %}
-                                            {% if clave == key %}
-                                                <td>
-                                                {% if clave == 'username' %}
-                                                    <a href='USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Ver'] }}'><font color="#088A4B">{{ valor }}</font></a>
-                                                {% else %}
-                                                    {{ valor }}
-                                                {% endif %}
-                                                </td>
-                                            {% endif %}
-                                        {% endfor %}       
-                                    {% endfor %}      
-                                    <td><button type="button" class="btn btn-info"><a href='USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Modificar'] }}'>{{ strings['Modificar'] }}</a></button></td>
-                                    <td><button type="button" class="btn btn-danger"><a href='USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Borrar'] }}'>{{ strings['Borrar'] }}</a></button></td>
+                                        <th><input type="checkbox" name="eliminar[]" value="{{ dato['0'] }}"></th>
+                                        <th><a href='USUARIO_Controller.php?username={{ dato['0'] }}&amp;accion={{ strings['Ver'] }}'><font color="#088A4B">{{ dato['0'] }}</font></a></th>
+                                        <td>{{ dato['2']}}</td>
+                                        <td>{{ dato['3']}}</td>
+                                        <td>{{ dato['4']}}</td>
+                                        <td>{{ dato['5']}}</td>
+                                        <td>{{ dato['6']}}</td>
+                                        <td>{{ dato['7']}}</td>
+
+                                        <td><a href='USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Modificar'] }}'><img src="../img/modify.png" width="40px" height="40px"> {{ strings['Modificar'] }}</img></a></td>
+                                        <td><a href="javascript:;" onclick="alert('USUARIO_Controller.php?username={{ dato['username'] }}&amp;accion={{ strings['Borrar'] }}&amp;nombre=nombre')"><img src="../img/Delete.png" width="40px" height="40px"> {{ strings['Borrar'] }}</img></a></td>
+                                    </tr>
                                 {% endfor %} 
                         </tbody>
                     </table>
                 </div>
+            </form>
             </div>
-    </div>
+        </div>
 {% endblock %}

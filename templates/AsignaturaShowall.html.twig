@@ -1,12 +1,18 @@
 {% extends "layout.html.twig" %}
 
-{% block title %}Asignatura Showall{% endblock %}
+{% block title %}{{ strings['Lista Asignaturas'] }}{% endblock %}
 {% block body %}
-	<div class="container">
-            <br>
+	<div class="row" style="clear:both;">
+        <div class="container">
+            <ul class="nav">    
+                <li style="margin-right:40px;margin-top:50px;">
+					<button type="submit" class="btn btn-white" onclick=this.form.action="../Controllers/ASIGNATURA_Controller.php?accion=eliminar" style="font-size:15px;"><img src="../img/eliminar2.png" width="40px" height="40px">  {{ strings['eliminarSeleccionadas'] }}</img></button>
+				</li><br>
+			</ul><br>
 			<table class="table">
 				<thead class="thead-dark">
 					<tr>
+                        <th scope="col"></th>
 						<th scope="col">{{ strings['asignaturanombre'] }}</th>
 						<th scope="col"></th>
 						<th scope="col"></th>
@@ -18,10 +24,13 @@
                 {% else %}
                     {% for valor in datos %}
                                 <tr>
-                                    <th><br>{{ valor['1'] }}</th>
+                                    <th><input type="checkbox" name="eliminar[]" value="{{ valor['0'] }}"></th>
+                                    <th>{{ valor['1'] }}</th>
+                                    {% if tipoUsuario == 2 %}
                                     <td><a href="https://secretaria.uvigo.gal/docnet-nuevo/guia_docent/index.php{{ valor['href'] }}" target="_blank"><button type="button" class="btn btn-success">{{ strings['Guia'] }}</button></a></td>
+                                    {% endif %}
                                     {% if tipoUsuario == 1 %}
-                                        <td><a href="?accion=vistaeliminar&amp;id={{ valor['0'] }}"><button type="button" class="btn btn-danger">{{ strings['asignaturaeliminar'] }}</button></a></td>
+                                        <td><a href="javascript:;" onclick="alert('ASIGNATURA_Controller.php?accion=eliminar&amp;id={{ valor['0'] }}')"><img src="../img/Delete.png" width="40px" height="40px"> {{ strings['asignaturaeliminar'] }}</img></a></td>
                                     {% endif %}
                                 </tr>
                     {% endfor %}
@@ -29,4 +38,5 @@
 				</tbody>
 			</table>
 		</div>
+    </div>
 {% endblock %}

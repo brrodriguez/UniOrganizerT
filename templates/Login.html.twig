@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
         <title>{% block title %}Login{% endblock %}</title>
         {% block stylesheets %}
             <link href="{{'../css/bootstrap.min.css'}}" type="text/css" rel="stylesheet">
@@ -17,12 +17,11 @@
                     <img src="../img/LogoUO.png" class="img-responsive" alt="" width="300" height="150" />
                     <input type="text" name="username" placeholder="{{ strings['username'] }}" required class="form-control input-lg" id="username" />
                     <input type="password" name="password" placeholder="{{ strings['password'] }}" required class="form-control input-lg" id="password" />
-                    <button type="submit" name="accion" class="btn btn-lg btn-primary btn-block" value="Login">Sign in</button>
+                    <button type="submit" name="accion" class="btn btn-lg btn-primary btn-block" value="Login">Iniciar Sesión</button>
                     <div>
                         <p>
 							<select name="IDIOMA">
                                 <option value="Castellano">Castellano</option>
-                                <option value="Galego">Galego</option>
                                 <option value="English">English</option>
                             </select>
 						</p>

@@ -1,0 +1,105 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ strings['Editar Evento'] }}{% endblock %}
+{% block body %}
+
+	<div class="row" style="clear:both;">
+        <div class="container">
+            <form id="form" name="form" action='../Controllers/EVENTO_Controller.php?accion={{ strings['Modificar'] }}'  method='post'   enctype="multipart/form-data">
+
+                <div class="col-lg-4" style="float:left;">
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['asuntoEvento'] }}</label><br>
+                        <input onchange="return valida_envia_asuntoEvento()" class="form" id="asuntoEvento" name="asuntoEvento"  size="78" value="{{ evento['asuntoEvento'] }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['descripcionEvento'] }}</label><br>
+                        <textarea onchange="return valida_envia_descripcionEvento()" rows="4" cols="80" name="descripcionEvento" >{{ evento['descripcionEvento'] }}</textarea>             
+                    </div>
+                </div>
+				
+                <div class="col-lg-4" style="float:right;">
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['Fecha'] }}</label><br>
+                        <input class="form" id="dia" name="dia"  type="date" value="{{ evento['dia'] }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['HoraInicio'] }}</label><br>
+                        <input onchange="return valida_envia_hora()" class="form" id="horaInicio" name="horaInicio" type="time" required="true" value="{{ evento['horaInicio'] }}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['HoraFin'] }}</label><br>
+                        <input onchange="return valida_envia_hora()" class="form" id="horaFin" name="horaFin" type="time" required="true" value="{{ evento['horaFin'] }}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" class="form" id="idEvento" name="idEvento" size="25" type="text" readonly="true" value="{{ evento['idEvento'] }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="hidden" class="form" id="username" name="username" size="25" type="text" readonly="true" value="{{ evento['username'] }}">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" class="form" id="idAsignatura" name="idAsignatura" size="25" type="text" readonly="true" value="{{ evento['idAsignatura'] }}">
+                    </div>
+                </div>
+                <br>
+
+                <div class="container" style="clear:both;">
+
+                    <div align='left'>
+                        <ul class="nav">
+                            <li style="margin-right:40px;margin-top:7px;">
+                                <h4>{{ strings['alertas'] }}</h4>
+                            </li>
+                            {% if userTipo == 2 %}
+                            <li style="margin-right:40px;margin-top:7px;">
+                                <a href="ALERTA_Controller.php?idEvento={{ evento['idEvento'] }}&amp;accion={{ strings['Crear'] }}"><img src="../img/add.png" width="40px" height="40px"> {{ strings['CrearAlerta'] }}</img></a>
+                            </li>
+                            {% endif %}
+                            <li style="margin-right:40px;">
+                                <button type="submit" class="btn btn-white" onclick=this.form.action="../Controllers/ALERTA_Controller.php?accion={{ strings['Borrar'] }}" style="font-size:15px;"><img src="../img/eliminar2.png" width="40px" height="40px">  {{ strings['eliminarSeleccionadas'] }}</img></button>
+                            </li><br>
+                        </ul><br>
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">{{ strings['asuntoAlerta'] }}</th>
+                                    <th scope="col">{{ strings['descripcionAlerta'] }}</th>
+                                    <th scope="col">{{ strings['Fecha'] }}</th>
+                                    <th scope="col">{{ strings['HoraInicio'] }}</th>
+                                    <th scope="col">{{ strings['HoraFin'] }}</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>       
+                                    {% for alerta in alertas %}
+                                        <tr>
+                                            <th><input type="checkbox" name="eliminar[]" value="{{ alerta['0'] }}"></th>
+                                            <th><a href='ALERTA_Controller.php?idAlerta={{ alerta['0'] }}&amp;accion={{ strings['Modificar'] }}'>{{ alerta['1'] }}</a></th>
+                                            <td>{{ alerta['2'] }}</td>
+                                            <td>{{ alerta['3'] }}</td>
+                                            <td>{{ alerta['4'] }}</td>
+                                            <td>{{ alerta['5'] }}</td>
+
+                                            <td><a href='ALERTA_Controller.php?idAlerta={{ alerta['0'] }}&amp;accion={{ strings['Modificar'] }}'><img src="../img/modify.png" width="40px" height="40px"> {{ strings['Modificar'] }}</button></a></td>
+                                            <td><a href="javascript:;" onclick="alert('ALERTA_Controller.php?idAlerta={{ alerta['0'] }}&amp;accion={{ strings['Borrar'] }}&amp;idEvento={{ evento['idEvento'] }}&amp;username=username')"><img src="../img/Delete.png" width="40px" height="40px"> {{ strings['Borrar'] }}</img></a></td>
+                                        </tr>
+                                    {% endfor %}							                           
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+				<button type='submit' class="btn btn-primary" onclick=this.form.action="../Controllers/EVENTO_Controller.php?accion={{ strings['Modificar'] }}&amp;username=username"{{ strings['Modificar'] }}">{{ strings['Modificar'] }}</button>
+                <a class="form-link" href="{{ volver }}">{{ strings['Volver'] }}</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

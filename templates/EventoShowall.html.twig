@@ -1,0 +1,77 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ strings['Lista Eventos'] }}{% endblock %}
+{% block body %}
+        <div class="row" style="clear:both;">
+            <div class="container">
+            <form method="POST" action="" id="frmEventos">
+                <div align='left'>
+                    <ul class="nav">
+                        {% if userTipo == 2 %}
+                        <li style="margin-right:40px;margin-top:7px;">
+                            <a href="../Controllers/EVENTO_Controller.php?accion={{ strings['Crear'] }}"><img src="../img/add.png" width="40px" height="40px"> {{ strings['CrearEvento'] }}</img></a>
+                        </li>
+                        {% endif %}
+                        <li style="margin-right:40px;margin-top:7px;">
+                            <a href="../Controllers/EVENTO_Controller.php?accion=vistafiltrar"><img src="../img/filter2.png" width="40px" height="40px"> {{ strings['filtrar'] }}</img></a>
+                        </li>
+                        <li style="margin-right:40px;">
+                            <button type="submit" class="btn btn-white" onclick="../Controllers/EVENTO_Controller.php?accion={{ strings['Borrar'] }}&amp;username=username" style="font-size:15px;"><img src="../img/eliminar2.png" width="40px" height="40px">  {{ strings['eliminarSelec'] }}</img></button>
+                        </li>
+                    </ul><br>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">{{ strings['asuntoEvento'] }}</th>
+
+                                <th scope="col">{{ strings['Fecha'] }}</th>
+                                <th scope="col">{{ strings['HoraInicio'] }}</th>
+                                <th scope="col">{{ strings['HoraFin'] }}</th>
+                                <th scope="col">{{ strings['asignatura'] }}</th>
+                                <th scope="col"></th>
+					            <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if nombres is defined %}
+                                {% set cont = 0 %}      
+								{% for dato in datos %}
+                                    <tr>
+                                        <th><input type="checkbox" name="eliminar[]" value="{{ dato['0'] }}"></th>
+                                        <th width='400px'><a href='EVENTO_Controller.php?accion={{ strings['Modificar'] }}&amp;idEvento={{ dato['0'] }}'>{{ dato['1'] }}</a></th>
+                                        <td>{{ dato['3']}}</td>
+                                        <td>{{ dato['4']}}</td>
+                                        <td>{{ dato['5']}}</td>
+                                        <td>{{ nombres[cont] }}</td>
+
+                                        <td><a href='EVENTO_Controller.php?idEvento={{ dato['0'] }}&amp;accion={{ strings['Modificar'] }}'><img src="../img/modify.png" width="40px" height="40px"> {{ strings['Modificar'] }}</img></a></td>
+                                        <td><a href="javascript:;" onclick="alert('EVENTO_Controller.php?idEvento={{ dato['0'] }}&amp;accion={{ strings['Borrar'] }}&amp;username=username')"><img src="../img/Delete.png" width="40px" height="40px"> {{ strings['Borrar'] }}</img></a></td>
+                                    </tr>
+                                    {% set cont = cont + 1 %}
+								{% endfor %}
+                            {% else %}
+                                {% for dato in datos %}
+                                    <tr>
+                                        <th><input type="checkbox" name="eliminar[]" value="{{ dato['0'] }}"></th>
+                                        <th width='400px'><a href='EVENTO_Controller.php?accion={{ strings['Modificar'] }}&amp;idEvento={{ dato['0'] }}'>{{ dato['1'] }}</a></th>
+                                        <td>{{ dato['3']}}</td>
+                                        <td>{{ dato['4']}}</td>
+                                        <td>{{ dato['5']}}</td>
+                                        <td>{{ dato['7']}}</td>
+
+                                        <td><a href='EVENTO_Controller.php?idEvento={{ dato['0'] }}&amp;accion={{ strings['Modificar'] }}'><img src="../img/modify.png" width="40px" height="40px"> {{ strings['Modificar'] }}</img></a></td>
+                                        <td><a href="javascript:;" onclick="alert('EVENTO_Controller.php?idEvento={{ dato['0'] }}&amp;accion={{ strings['Borrar'] }}&amp;username=username')"><img src="../img/Delete.png" width="40px" height="40px"> {{ strings['Borrar'] }}</img></a></td>
+                                    </tr>
+								{% endfor %}
+                            {% endif %}							                           
+                        </tbody>
+                    </table>
+                    {% if volver is defined %}
+                        <a class="form-link" href="{{ volver }}">{{ strings['Volver'] }}</a>
+                    {% endif %}
+                </div>
+            </form>
+            </div>
+        </div>
+{% endblock %}

@@ -1,60 +1,57 @@
 {% extends "layout.html.twig" %}
 
-{% block title %}Usuario Add{% endblock %}
+{% block title %}{{ strings['Crear Usuario'] }}{% endblock %}
 {% block body %}
-	<div class="container" >
+	<div class="row" style="clear:both;">
+		<div class="container">
             <form  id="form" name="form" action='USUARIO_Controller.php?user=admin'  method='post'   enctype="multipart/form-data">
-                <div class="form-group" >
-                    <label class="control-label" >{{ strings['Insertar Usuario'] }}</label><br>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['username'] }}*</label><br>
-                    <input onchange="return valida_envia_username()" class="form" id="username" name="username" size="20" type="text" required="true"/>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['password'] }}*</label><br>
-                    <input onchange="return valida_envia_password()" class="form" id="password" name="password" size="20" type="password" required="true"/>
-                </div>   
+                <div class="col-lg-4" style="float:left;">
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['username'] }}*</label><br>
+                        <input onchange="return valida_envia_username()" class="form" id="username" name="username" size="20" type="text" required="true"/>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['nombre'] }}*</label><br>
-                    <input onchange="return valida_envia_nombre()" class="form" id="nombre" name="nombre" size="50" type="text" required="true"/>
-                </div>
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['password'] }}*</label><br>
+                        <input onchange="return valida_envia_password()" class="form" id="password" name="password" size="20" type="password" required="true"/>
+                    </div>   
 
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['apellidos'] }}*</label><br>
-                    <input onchange="return valida_envia_apellidos()" class="form" id="apellidos" name="apellidos" size="50" type="text" required="true"/>
-                </div>
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['nombre'] }}*</label><br>
+                        <input onchange="return valida_envia_nombre()" class="form" id="nombre" name="nombre" size="50" type="text" required="true"/>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['dni'] }}*</label><br>
-                    <input onchange="return valida_envia_dni()" class="form" id="dni" name="dni" size="9" type="text" required="true"/>
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['apellidos'] }}*</label><br>
+                        <input onchange="return valida_envia_apellidos()" class="form" id="apellidos" name="apellidos" size="50" type="text" required="true"/>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['fechaNac'] }}*</label><br>
-                    <input onchange="return valida_envia_fechaNac()" class="form" id="fechaNac" name="fechaNac" type="date" required="true"/>
-                </div>
+                <div class="col-lg-4" style="float:right;">
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['dni'] }}*</label><br>
+                        <input onchange="return valida_envia_dni()" class="form" id="dni" name="dni" size="9" type="text" required="true"/>
+                    </div>
 
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['fechaNac'] }}*</label><br>
+                        <input onchange="return valida_envia_fechaNac()" class="form" id="fechaNac" name="fechaNac" type="date" required="true"/>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['niu'] }}*</label><br>
-                    <input onchange="return valida_envia_niu()" class="form" id="niu" name="niu" size="12" type="text" required="true"/>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label" >{{ strings['email'] }}*</label><br>
-                    <input onchange="return valida_envia_email()" class="form" id="email" name="email" size="50" type="email" required="true"/>
+                    <div class="form-group">
+                        <label class="control-label" >{{ strings['email'] }}*</label><br>
+                        <input onchange="return valida_envia_email()" class="form" id="email" name="email" size="50" type="email" required="true"/>
+                    </div>
                 </div>
 				
-				<div class="form-group">
+				<div class="form-group" style="clear:both;">
                     <input type="hidden" id="tipoUsuario" name="tipoUsuario" size="10" type="text" required="true" value="{{ tipoUsuario }}" readonly="true"/>
                 </div>
 			
-
-                <input type='submit' onclick="return valida_envia_USUARIO()" name='accion'  value="{{ strings['Insertar'] }}">
+                <button type='submit' class="btn btn-primary" onclick="return valida_envia_USUARIO()" name='accion' value="{{ strings['Insertar'] }}">{{ strings['Insertar'] }}</button>
                 <a class="form-link" href="{{ volver }}">{{ strings['Volver'] }}</a>
             </form>
         </div>
+    </div>
 {% endblock %}
