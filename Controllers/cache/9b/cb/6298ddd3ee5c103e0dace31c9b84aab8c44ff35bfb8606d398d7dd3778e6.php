@@ -35,108 +35,97 @@ class __TwigTemplate_9bcb6298ddd3ee5c103e0dace31c9b84aab8c44ff35bfb8606d398d7dd3
     public function block_body($context, array $blocks = array())
     {
         // line 5
-        echo "\t<div class=\"container\" >
+        echo "\t<div class=\"row\" style=\"clear:both;\">
+\t\t<div class=\"container\">
             <form  id=\"form\" name=\"form\" action='USUARIO_Controller.php?user=user'  method='post'   enctype=\"multipart/form-data\">
                 <div class=\"form-group\" >
-                    <label class=\"control-label\" >";
-        // line 8
+                    <label class=\"control-label\" ><h5>";
+        // line 9
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Eliminar Usuario", array(), "array"), "html", null, true);
-        echo "</label><br>
+        echo "</h5></label><br>
                 </div>
                
                 
                 <div class=\"form-group\">
                     <label class=\"control-label\" >";
-        // line 13
+        // line 14
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "username", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"username\" name=\"username\" size=\"25\" type=\"text\" readonly=\"true\" value=\"";
-        // line 14
+        // line 15
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "username", array(), "array"), "html", null, true);
         echo "\">
                 </div>
                 
                  <div class=\"form-group\">
                     <input type='hidden' class=\"form\" id=\"username\" name=\"password\" size=\"25\" type=\"text\" readonly=\"true\" value=\"";
-        // line 18
+        // line 19
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "password", array(), "array"), "html", null, true);
         echo "\">
                 </div>
 \t\t\t\t
 \t\t\t\t<div class=\"form-group\">
                     <label class=\"control-label\" >";
-        // line 22
+        // line 23
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "tipoUsuario", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"tipoUsuario\" name=\"tipoUsuario\" size=\"10\" type=\"int\" readonly=\"true\" value=\"";
-        // line 23
+        // line 24
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "tipoUsuario", array(), "array"), "html", null, true);
         echo "\">
                 </div>
 
                 <div class=\"form-group\">
                     <label class=\"control-label\" >";
-        // line 27
+        // line 28
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "nombre", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"nombre\" name=\"nombre\" size=\"50\" type=\"text\" readonly=\"true\" value=\"";
-        // line 28
+        // line 29
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "nombre", array(), "array"), "html", null, true);
         echo "\">
                 </div>
 
                 <div class=\"form-group\">
                     <label class=\"control-label\" >";
-        // line 32
+        // line 33
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "apellidos", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"apellidos\" name=\"apellidos\" size=\"50\" type=\"text\" readonly=\"true\" value=\"";
-        // line 33
+        // line 34
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "apellidos", array(), "array"), "html", null, true);
         echo "\">
                 </div>
 
                 <div class=\"form-group\">
                     <label class=\"control-label\" >";
-        // line 37
+        // line 38
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "dni", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"dni\" name=\"dni\" size=\"9\" type=\"text\" readonly=\"true\" value=\"";
-        // line 38
+        // line 39
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "dni", array(), "array"), "html", null, true);
         echo "\">
                 </div>
 
                 <div class=\"form-group\">
                     <label class=\"control-label\" >";
-        // line 42
+        // line 43
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "fechaNac", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"fechaNac\" name=\"fechaNac\" type=\"date\" readonly=\"true\" value=\"";
-        // line 43
+        // line 44
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "fechaNac", array(), "array"), "html", null, true);
         echo "\">
                 </div>
 
-
                 <div class=\"form-group\">
                     <label class=\"control-label\" >";
         // line 48
-        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "niu", array(), "array"), "html", null, true);
-        echo "</label><br>
-                    <input class=\"form\" id=\"niu\" name=\"niu\" size=\"20\" type=\"text\" readonly=\"true\" value=\"";
-        // line 49
-        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "niu", array(), "array"), "html", null, true);
-        echo "\">
-                </div>
-
-                <div class=\"form-group\">
-                    <label class=\"control-label\" >";
-        // line 53
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "email", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"email\" name=\"email\" size=\"50\" type=\"email\" readonly=\"true\" value=\"";
-        // line 54
+        // line 49
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["valores"]) ? $context["valores"] : null), "email", array(), "array"), "html", null, true);
         echo "\">
                 </div>
@@ -144,19 +133,21 @@ class __TwigTemplate_9bcb6298ddd3ee5c103e0dace31c9b84aab8c44ff35bfb8606d398d7dd3
 
                 <br>
 
-                <input type = 'submit' name = 'accion' value = '";
-        // line 60
+                <button type='submit' class=\"btn btn-primary\" name='accion' value=\"";
+        // line 55
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Borrar", array(), "array"), "html", null, true);
-        echo "'>
+        echo "\">";
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Borrar", array(), "array"), "html", null, true);
+        echo "</button>
                 <a class=\"form-link\" href='";
-        // line 61
+        // line 56
         echo twig_escape_filter($this->env, (isset($context["volver"]) ? $context["volver"] : null), "html", null, true);
         echo " '>";
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Volver", array(), "array"), "html", null, true);
         echo " </a>
             </form>
-
         </div>
+    </div>
 ";
     }
 
@@ -172,6 +163,6 @@ class __TwigTemplate_9bcb6298ddd3ee5c103e0dace31c9b84aab8c44ff35bfb8606d398d7dd3
 
     public function getDebugInfo()
     {
-        return array (  153 => 61,  149 => 60,  140 => 54,  136 => 53,  129 => 49,  125 => 48,  117 => 43,  113 => 42,  106 => 38,  102 => 37,  95 => 33,  91 => 32,  84 => 28,  80 => 27,  73 => 23,  69 => 22,  62 => 18,  55 => 14,  51 => 13,  43 => 8,  38 => 5,  35 => 4,  29 => 3,);
+        return array (  144 => 56,  138 => 55,  129 => 49,  125 => 48,  118 => 44,  114 => 43,  107 => 39,  103 => 38,  96 => 34,  92 => 33,  85 => 29,  81 => 28,  74 => 24,  70 => 23,  63 => 19,  56 => 15,  52 => 14,  44 => 9,  38 => 5,  35 => 4,  29 => 3,);
     }
 }

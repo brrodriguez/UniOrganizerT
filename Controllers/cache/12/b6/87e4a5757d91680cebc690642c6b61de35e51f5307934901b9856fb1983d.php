@@ -35,14 +35,15 @@ class __TwigTemplate_12b687e4a5757d91680cebc690642c6b61de35e51f5307934901b9856fb
     public function block_body($context, array $blocks = array())
     {
         // line 5
-        echo "\t<div class=\"container\" >
+        echo "\t<div class=\"row\" style=\"clear:both;\">
+        <div class=\"container\">
             <form method=\"POST\" action=\"../Controllers/ASIGNATURA_Controller.php?accion=eliminar&amp;id=";
-        // line 6
+        // line 7
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["datos"]) ? $context["datos"] : null), "idAsignatura", array(), "array"), "html", null, true);
         echo "\">
                 <div class=\"form-group\" >
                     <label class=\"control-label\" >";
-        // line 8
+        // line 9
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Eliminar Asignatura", array(), "array"), "html", null, true);
         echo "</label><br>
                 </div>
@@ -50,11 +51,11 @@ class __TwigTemplate_12b687e4a5757d91680cebc690642c6b61de35e51f5307934901b9856fb
                 
                 <div class=\"form-group\">
                     <label class=\"control-label\" >";
-        // line 13
+        // line 14
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "nombreAsignatura", array(), "array"), "html", null, true);
         echo "</label><br>
                     <input class=\"form\" id=\"nombreAsignatura\" name=\"nombreAsignatura\" size=\"50\" type=\"text\" readonly=\"true\" value=\"";
-        // line 14
+        // line 15
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["datos"]) ? $context["datos"] : null), "nombreAsignatura", array(), "array"), "html", null, true);
         echo "\">
                 </div>             
@@ -62,17 +63,18 @@ class __TwigTemplate_12b687e4a5757d91680cebc690642c6b61de35e51f5307934901b9856fb
                 <br>
 \t\t\t\t
 \t\t\t\t<button type=\"submit\" class=\"btn btn-primary\">";
-        // line 19
+        // line 20
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Borrar", array(), "array"), "html", null, true);
         echo "</button>
                 <a class=\"form-link\" href='";
-        // line 20
+        // line 21
         echo twig_escape_filter($this->env, (isset($context["volver"]) ? $context["volver"] : null), "html", null, true);
         echo "'>";
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Volver", array(), "array"), "html", null, true);
         echo " </a>
             </form>
         </div>
+    </div>
 ";
     }
 
@@ -88,6 +90,6 @@ class __TwigTemplate_12b687e4a5757d91680cebc690642c6b61de35e51f5307934901b9856fb
 
     public function getDebugInfo()
     {
-        return array (  70 => 20,  66 => 19,  58 => 14,  54 => 13,  46 => 8,  41 => 6,  38 => 5,  35 => 4,  29 => 3,);
+        return array (  71 => 21,  67 => 20,  59 => 15,  55 => 14,  47 => 9,  42 => 7,  38 => 5,  35 => 4,  29 => 3,);
     }
 }

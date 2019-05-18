@@ -3,6 +3,7 @@
 include_once '../Models/ASIGNATURA_Model.php';
 include_once '../Functions/LibraryFunctions.php';
 require_once '../Twig/Autoloader.php';
+header("Content-Type: text/html;charset=utf-8");
 
 Twig_Autoloader::register();
 $loader = new Twig_Loader_Filesystem( '../templates');
@@ -12,6 +13,7 @@ if (!IsAuthenticated()) {
     header('Location:../index.php');
 }
 include '../Locates/Strings_' . $_SESSION['IDIOMA'] . '.php';
+registerGlobals($twig);
 
 function get_data_form()
 {
@@ -57,8 +59,15 @@ switch ($_REQUEST['accion']) { //Actúa según la acción elegida
 			$template = $twig->loadTemplate('Mensaje.html.twig');
 			echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => 'ASIGNATURA_Controller.php'));
     } else {
-			$asignatura = get_data_form();
-			$asignatura->Borrar( $_REQUEST['id'] );
+			if(isset($_POST['eliminar'])){
+				foreach($_POST['eliminar'] as $valor){
+					$asignatura = new ASIGNATURA_Model($valor, '');
+					$asignatura->Borrar( $valor );
+				}
+			}else{
+				$asignatura = new ASIGNATURA_Model($_REQUEST['id'], '');
+				$asignatura->Borrar( $_REQUEST['id'] );
+			}
 			$datos = $asignatura->Listar();
 			$tipoUsuario = ConsultarTipoUsuario($_SESSION['login']);
 			$template = $twig->loadTemplate('AsignaturaShowall.html.twig');
@@ -69,7 +78,6 @@ switch ($_REQUEST['accion']) { //Actúa según la acción elegida
     default: //Por defecto se realiza el show all
       
 		if (ConsultarTipoUsuario($_SESSION['login']) != 2) {
-			//Carga una vista con todos los cursos al ser administrador
 			$asignatura = get_data_form();
 			$datos = $asignatura->Listar();
 			$tipoUsuario = ConsultarTipoUsuarioLogin();
@@ -82,7 +90,6 @@ switch ($_REQUEST['accion']) { //Actúa según la acción elegida
       	echo $template->render(array('strings' => $strings, 'datos' => $datos,'tipoUsuario' => $tipoUsuario, 'volver' => '../Functions/index.php'));
 			}
     } else {
-            //Si no, cargaría una vista exactamente igual pero solo vería sus cursos
 			$asignatura = get_data_form();
 			$asignaturas = $asignatura->ListarAsignaturasUsuario();
 			$guias = extraerAsignaturasGuia();
@@ -266,7 +273,7 @@ switch ($_REQUEST['accion']) { //Actúa según la acción elegida
 				$template = $twig->loadTemplate('Mensaje.html.twig');
     		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Functions/index.php'));
 			} else {
-				$template = $twig->loadTemplate('UsuarioShowall.html.twig');
+				$template = $twig->loadTemplate('AsignaturaShowall.html.twig');
         echo $template->render(array('strings' => $strings, 'datos' => $datos, 'tipoUsuario' => $tipoUsuario, 'volver' => '../Functions/index.php'));
 			}
     }

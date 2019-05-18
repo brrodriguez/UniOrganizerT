@@ -1,20 +1,23 @@
 <?php
 //Controlador para la gestión de alertas
 include '../Models/ALERTA_Model.php';
+include '../Models/EVENTO_Model.php';
 include '../Models/USUARIO_Model.php';
 include_once '../Functions/LibraryFunctions.php';
 require_once '../Twig/Autoloader.php';
+header("Content-Type: text/html;charset=utf-8");
 
 Twig_Autoloader::register();
 $loader = new Twig_Loader_Filesystem( '../templates');
 $twig = new Twig_Environment($loader, array('cache' =>  'cache','debug' =>  'true'));
-
+registerGlobals($twig);
 
 if (!IsAuthenticated()) {
     header('Location:../index.php');
 }
 
 include '../Locates/Strings_' . $_SESSION['IDIOMA'] . '.php';
+registerGlobals($twig);
 
 if (!isset($_REQUEST['accion'])) {
     $_REQUEST['accion'] = '';
@@ -25,71 +28,36 @@ if (!isset($_REQUEST['accion'])) {
 function get_data_form() {
     $idAlerta = $_REQUEST['idAlerta'];
     $asuntoAlerta = $_REQUEST['asuntoAlerta'];
-    $descripcionAlerta = $_REQUEST['descripcionAlerta'];
+	$descripcionAlerta = $_REQUEST['descripcionAlerta'];
+	$dia = $_REQUEST['dia'];
+	$horaInicio = $_REQUEST['horaInicio'];
+	$horaFin = $_REQUEST['horaFin'];
+	$idEvento = $_REQUEST['idEvento'];
 
 
-    $alerta = new ALERTA_Model($idAlerta, $asuntoAlerta, $descripcionAlerta);
+    $alerta = new ALERTA_Model($idAlerta, $asuntoAlerta, $descripcionAlerta, $dia, $horaInicio, $horaFin, $idEvento);
     return $alerta;
 }
 
 switch ($_REQUEST['accion']) { //Actúa según la acción elegida
-    case $strings['Crear']:
+		
+	case $strings['Crear']:
 
         if (!tienePermisos('../templates/AlertaAdd.html.twig')) {
             $template = $twig->loadTemplate('Mensaje.html.twig');
-    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/ALERTA_Controller.php'));
+    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/EVENTO_Controller.php.php'));
         } else {
             if (!isset($_REQUEST['username'])) {
-				$usuario = new USUARIO_Modelo($_SESSION['login'], $_SESSION['pass'], '', '', '', '', '', '', '', '');
-				$cursos = $usuario->listarMisCursos();              
-                if (!isset($_REQUEST['fecha'])) {
-					$fecha = NULL;
-				}else{
-					$fecha = $_REQUEST['fecha'];
-				}
+				$evento = new EVENTO_Model($_REQUEST['idEvento'], '', '', '', '', '', '');
+				$datos = $evento->Ver();
+				$controller = '../Controllers/EVENTO_Controller.php?accion=Modificar&idEvento=';
+				$volver = $controller . $_REQUEST['idEvento'];
 				$template = $twig->loadTemplate('AlertaAdd.html.twig');
-                echo $template->render(array('strings' => $strings, 'cursos' => $cursos, 'fecha' => $fecha, 'volver' => '../Controllers/ALERTA_Controller.php'));
+                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'volver' => $volver));
 
             } else {
 				//Se transforma algún dato para obtener el formato correcto y se crean las alertas
-				$idCurso = obtenerIdCurso($_REQUEST['curso']);
-				$fecha = $_REQUEST['fecha'];
-				$menos = '-';
-				$dias = $_REQUEST['dias'];
-				$day = ' day';
-				$dia = $menos . $dias . $day;
-				$nuevafecha = strtotime ( $dia , strtotime ( $fecha ) ) ;
-				$nuevafecha = date ( 'Y-m-j' , $nuevafecha );
-				$alerta = new ALERTA_Model( '', $_REQUEST['asuntoAlerta'], $_REQUEST['descripcionAlerta']);
-                $respuesta = $alerta->Insertar($_REQUEST['fecha'], $_REQUEST['hora'], $idCurso);
-				//Si se incluye en campo de Dias, se crea un aviso con x días de antelación
-				if($dias!=NULL){
-					$aviso1 = "AVISO: ";
-					$aviso2 = " dias para ";
-					$asunto = $aviso1 . $dias . $aviso2;
-					$alerta2 = new ALERTA_Model( '', $asunto, $_REQUEST['descripcionAlerta']);
-					$alerta2->Insertar($nuevafecha, $_REQUEST['hora'], $idCurso);
-				}
-				$template = $twig->loadTemplate('Mensaje.html.twig');
-    			echo $template->render(array('strings' => $strings, 'respuesta' => $respuesta, 'volver' => '../Controllers/ALERTA_Controller.php'));
-            }
-        }
-		
-	case $strings['Añadir']:
-
-        if (!tienePermisos('../templates/AlertaEntregaAdd.html.twig')) {
-            $template = $twig->loadTemplate('Mensaje.html.twig');
-    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/ALERTA_Controller.php'));
-        } else {
-            if (!isset($_REQUEST['username'])) {
-				$datos = obtenerDatosEntrega($_REQUEST['idCalendarioHoras']);
-				$template = $twig->loadTemplate('AlertaEntregaAdd.html.twig');
-                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'volver' => '../Controllers/ALERTA_Controller.php'));
-
-            } else {
-				//Se transforma algún dato para obtener el formato correcto y se crean las alertas
-				$idCurso = $_REQUEST['curso'];
-				$fecha = $_REQUEST['fecha'];
+				$fecha = $_REQUEST['dia'];
 				$menos = '-';
 				$dias = $_REQUEST['dias'];
 				$day = ' day';
@@ -99,33 +67,53 @@ switch ($_REQUEST['accion']) { //Actúa según la acción elegida
 				//Se crea un aviso con x días de antelación
 				$aviso1 = "AVISO: ";
 				$aviso2 = " dias para ";
-				$asunto = $aviso1 . $dias . $aviso2;
-				$alerta2 = new ALERTA_Model( '', $asunto, $_REQUEST['descripcionAlerta']);
-				$respuesta = $alerta2->Insertar($nuevafecha, $_REQUEST['hora'], $idCurso);
-				$template = $twig->loadTemplate('Mensaje.html.twig');
-    			echo $template->render(array('strings' => $strings, 'respuesta' => $respuesta, 'volver' => '../Controllers/ALERTA_Controller.php'));
+				$asunto = $aviso1 . $dias . $aviso2 . $_REQUEST['asuntoAlerta'];
+				$alerta = new ALERTA_Model( '', $asunto, $_REQUEST['descripcionAlerta'], $_REQUEST['dia'], $_REQUEST['horaInicio'], $_REQUEST['horaFin'], $_REQUEST['idEvento']);
+				$respuesta = $alerta->Insertar($nuevafecha, $_REQUEST['horaInicio'], $_REQUEST['horaFin']);
+				$idEvento = $_REQUEST['idEvento'];
+                $evento = new EVENTO_Model($idEvento, '', '', '', '', '', '');
+				$datos1 = $evento->Ver(); 
+				$datos2 = $evento->obtenerAlertasEvento();
+				$template = $twig->loadTemplate('EventoEdit.html.twig');
+    			echo $template->render(array('strings' => $strings, 'respuesta' => $respuesta, 'evento' => $datos1, 'alertas' => $datos2, 'volver' => '../Controllers/EVENTO_Controller.php.php'));
             }
-        }
+		}
+		break;
 
     case $strings['Borrar']:
 
         if (!tienePermisos('../templates/AlertaDelete.html.twig')) {
             $template = $twig->loadTemplate('Mensaje.html.twig');
-    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/ALERTA_Controller.php'));
+    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/EVENTO_Controller.php'));
         } else {
 			if (!isset($_REQUEST['username'])) {
 				
                 $idAlerta = $_REQUEST['idAlerta'];
-                $alerta = new ALERTA_Model($idAlerta, '', '');
+                $alerta = new ALERTA_Model($idAlerta, '', '', '', '', '', '');
 				$datos = $alerta->Ver(); 
 				$template = $twig->loadTemplate('AlertaDelete.html.twig');
-                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'volver' => '../Controllers/ALERTA_Controller.php'));              
+                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'volver' => '../Controllers/EVENTO_Controller.php'));              
 
             } else {
-                $alerta = new ALERTA_Model($_REQUEST['idAlerta'], '', '');
-				$respuesta = $alerta->Borrar();
-				$template = $twig->loadTemplate('Mensaje.html.twig');
-    			echo $template->render(array('strings' => $strings, 'respuesta' => $respuesta, 'volver' => '../Controllers/ALERTA_Controller.php'));
+				if(isset($_POST['eliminar'])){
+					foreach($_POST['eliminar'] as $valor){
+						$alerta = new ALERTA_Model($valor, '', '', '', '', '', '');
+						$respuesta = $alerta->Borrar();
+					}
+				}else{
+					if(isset($_REQUEST['idAlerta'])){
+						$alerta = new ALERTA_Model($_REQUEST['idAlerta'], '', '', '', '', '', '');
+						$respuesta = $alerta->Borrar();
+					}else{
+						$respuesta = null;
+					}
+				}
+				$idEvento = $_REQUEST['idEvento'];
+                $evento = new EVENTO_Model($idEvento, '', '', '', '', '', '');
+				$datos1 = $evento->Ver(); 
+				$datos2 = $evento->obtenerAlertasEvento();
+				$template = $twig->loadTemplate('EventoEdit.html.twig');
+    			echo $template->render(array('strings' => $strings, 'respuesta' => $respuesta, 'evento' => $datos1, 'alertas' => $datos2, 'volver' => '../Controllers/EVENTO_Controller.php'));
             }
             
         }
@@ -135,44 +123,29 @@ switch ($_REQUEST['accion']) { //Actúa según la acción elegida
 		
 		if (!tienePermisos('../templates/AlertaEdit.html.twig')) {
             $template = $twig->loadTemplate('Mensaje.html.twig');
-    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/ALERTA_Controller.php'));
+    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/EVENTO_Controller.php'));
         } else {
 			if (!isset($_REQUEST['username'])) {
 				
                 $idAlerta = $_REQUEST['idAlerta'];
-                $alerta = new ALERTA_Model($idAlerta, '', '');
+                $alerta = new ALERTA_Model($idAlerta, '', '', '', '', '', '');
 				$datos1 = $alerta->Ver(); 
-				$datos2 = obtenerDatosEvento($_REQUEST['idAlerta']);
+				$datos2 = obtenerDatosAlerta($_REQUEST['idAlerta']);
 				$template = $twig->loadTemplate('AlertaEdit.html.twig');
-                echo $template->render(array('strings' => $strings, 'datos1' => $datos1, 'datos2' => $datos2, 'volver' => '../Controllers/ALERTA_Controller.php'));
+                echo $template->render(array('strings' => $strings, 'alerta' => $datos1, 'datos2' => $datos2, 'volver' => '../Controllers/EVENTO_Controller.php'));
                 
             }else{
 				$alerta = get_data_form();
-				$respuesta = $alerta->Modificar($_REQUEST['fecha'], $_REQUEST['hora'], $_REQUEST['idCalendarioHoras']);
-				$template = $twig->loadTemplate('Mensaje.html.twig');
-    			echo $template->render(array('strings' => $strings, 'respuesta' => $respuesta, 'volver' => '../Controllers/ALERTA_Controller.php'));
+				$respuesta = $alerta->Modificar($_REQUEST['dia'], $_REQUEST['horaInicio'], $_REQUEST['horaFin']);
+				$idEvento = $_REQUEST['idEvento'];
+                $evento = new EVENTO_Model($idEvento, '', '', '', '', '', '');
+				$datos1 = $evento->Ver(); 
+				$datos2 = $evento->obtenerAlertasEvento();
+				$template = $twig->loadTemplate('EventoEdit.html.twig');
+    			echo $template->render(array('strings' => $strings, 'respuesta' => $respuesta, 'evento' => $datos1, 'alertas' => $datos2, 'volver' => '../Controllers/EVENTO_Controller.php'));
 			}
         }
         break;	
-
-    case $strings['Ver']:
-		
-		if (!tienePermisos('../templates/AlertaShow.html.twig')) {
-            $template = $twig->loadTemplate('Mensaje.html.twig');
-    		echo $template->render(array('strings' => $strings, 'respuesta' => 'No tienes los permisos necesarios', 'volver' => '../Controllers/ALERTA_Controller.php'));
-        } else {
-			if (!isset($_REQUEST['username'])) {
-				
-                $idAlerta = $_REQUEST['idAlerta'];
-                $alerta = new ALERTA_Model($idAlerta, '', '');
-                $datos1 = $alerta->Ver();
-				$datos2 = obtenerDatosEvento($_REQUEST['idAlerta']);
-				$template = $twig->loadTemplate('AlertaShow.html.twig');
-                echo $template->render(array('strings' => $strings, 'datos1' => $datos1, 'datos2' => $datos2, 'volver' => '../Controllers/ALERTA_Controller.php'));				
-                
-            }
-        }
-        break;
 
     //Por defecto se realiza un show all de las alertas a las que tiene acceso el usuario.
     default:
@@ -183,19 +156,16 @@ switch ($_REQUEST['accion']) { //Actúa según la acción elegida
         } else {
 			$tipoUsuario = ConsultarTipoUsuario($_SESSION['login']);
 			if($tipoUsuario == 1){
-				$lista = array( 'asuntoAlerta', 'descripcionAlerta');
-				$alerta = new ALERTA_Model('', '', '');
+				$alerta = new ALERTA_Model('', '', '', '', '', '', '');
 				$datos = $alerta->ListarTodo();	
 				$template = $twig->loadTemplate('AlertaShowall.html.twig');
-                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'lista' => $lista, 'volver' => '../Functions/index.php'));
+                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'volver' => '../Functions/index.php'));
 				
 			}else{ 
-				$lista = array( 'asuntoAlerta', 'descripcionAlerta');
-				$idCalendario = ObtenerCalendario($_SESSION['login']);
-				$alerta = new ALERTA_Model('', '', '');
-				$datos = $alerta->Listar($idCalendario);
+				$alerta = new ALERTA_Model('', '', '', '', '', '', '');
+				$datos = $alerta->Listar($_SESSION['login']);
 				$template = $twig->loadTemplate('AlertaShowall.html.twig');
-                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'lista' => $lista, 'volver' => '../Functions/index.php'));				
+                echo $template->render(array('strings' => $strings, 'datos' => $datos, 'volver' => '../Functions/index.php'));				
 			}
 			
         }

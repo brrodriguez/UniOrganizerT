@@ -28,121 +28,138 @@ class __TwigTemplate_15f9a1dbe264e693cc8de3f44acfdce343a85dbcd18e39e81e0f1bb7607
     // line 3
     public function block_title($context, array $blocks = array())
     {
-        echo "Curso Showall";
+        echo "Calendarios";
     }
 
     // line 4
     public function block_body($context, array $blocks = array())
     {
         // line 5
-        echo "\t<div class=\"container\">
-\t\t\t";
-        // line 6
+        echo "<body onload=\"info();\">
+\t<div class=\"row\" style=\"clear:both;\">
+\t\t<div class=\"container\">
+\t\t<form method=\"POST\" action=\"\" id=\"frmCursos\">
+\t\t\t<ul class=\"nav\">
+\t\t\t\t";
+        // line 10
         if (((isset($context["userTipo"]) ? $context["userTipo"] : null) == 2)) {
-            // line 7
-            echo "\t\t\t<a href=\"?accion=vistainsertar\"><button type=\"button\" class=\"btn btn-primary btn-lg btn-block\">";
+            // line 11
+            echo "\t\t\t\t<li style=\"margin-right:40px;margin-top:7px;\">
+\t\t\t\t\t<a href=\"?accion=vistainsertar\"><img src=\"../img/add.png\" width=\"40px\" height=\"40px\"> ";
+            // line 12
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "newcurso", array(), "array"), "html", null, true);
-            echo "</button></a>
-\t\t\t<br>
-\t\t\t<a href=\"?accion=vistaimportar\"><button type=\"button\" class=\"btn btn-primary btn-lg btn-block\">";
-            // line 9
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "obtenerCurso", array(), "array"), "html", null, true);
-            echo "</button></a>
-\t\t\t<br>
-\t\t\t";
+            echo "</img></a>
+\t\t\t\t</li><br>
+\t\t\t\t";
         }
-        // line 12
-        echo "\t\t\t";
+        // line 15
+        echo "\t\t\t\t";
         if (((isset($context["userTipo"]) ? $context["userTipo"] : null) == 1)) {
-            // line 13
-            echo "\t\t\t<a href=\"?accion=vistafiltrar\"><button type=\"button\" class=\"btn btn-primary btn-lg btn-block\">";
+            // line 16
+            echo "\t\t\t\t<li style=\"margin-right:40px;margin-top:7px;\">
+\t\t\t\t\t<a href=\"?accion=vistafiltrar\"><img src=\"../img/filter2.png\" width=\"40px\" height=\"40px\"> ";
+            // line 17
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "filtrar", array(), "array"), "html", null, true);
-            echo "</button></a>
-\t\t\t<br>
-\t\t\t";
+            echo "</img></a>
+\t\t\t\t</li><br>
+\t\t\t\t";
         }
-        // line 16
-        echo "\t\t\t
+        // line 20
+        echo "\t\t\t\t<li style=\"margin-right:40px;\">
+\t\t\t\t\t<button type=\"submit\" class=\"btn btn-white\" onclick=this.form.action=\"../Controllers/CURSO_Controller.php?accion=eliminar\" style=\"font-size:15px;\"><img src=\"../img/eliminar2.png\" width=\"40px\" height=\"40px\">  ";
+        // line 21
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "eliminarSelec", array(), "array"), "html", null, true);
+        echo "</img></button>
+\t\t\t\t</li><br>
+\t\t\t</ul><br>
+\t\t\t
 \t\t\t<table class=\"table\">
 \t\t\t\t<thead class=\"thead-dark\">
 \t\t\t\t\t<tr>
-\t\t\t\t\t  <th scope=\"col\">";
-        // line 20
+\t\t\t\t\t\t<th scope=\"col\"></th>
+\t\t\t\t\t\t<th scope=\"col\">";
+        // line 29
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "nombreCurso2", array(), "array"), "html", null, true);
         echo "</th>
-\t\t\t\t\t  <th scope=\"col\">";
-        // line 21
+\t\t\t\t\t\t<th scope=\"col\">";
+        // line 30
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "descripcionCurso2", array(), "array"), "html", null, true);
         echo "</th>
-\t\t\t\t\t  <th scope=\"col\">";
-        // line 22
-        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "username", array(), "array"), "html", null, true);
-        echo "</th>
-\t\t\t\t\t  <th scope=\"col\"></th>
-\t\t\t\t\t  <th scope=\"col\"></th>
-\t\t\t\t\t  <th scope=\"col\"></th>
+\t\t\t\t\t\t";
+        // line 31
+        if (((isset($context["userTipo"]) ? $context["userTipo"] : null) == 1)) {
+            // line 32
+            echo "\t\t\t\t\t\t<th scope=\"col\">";
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "username", array(), "array"), "html", null, true);
+            echo "</th>
+\t\t\t\t\t\t";
+        }
+        // line 34
+        echo "\t\t\t\t\t\t<th scope=\"col\"></th>
+\t\t\t\t\t\t<th scope=\"col\"></th>
+\t\t\t\t\t\t<th scope=\"col\"></th>
+\t\t\t\t\t\t<th scope=\"col\"></th>
 \t\t\t\t\t</tr>
 \t\t\t\t</thead>
 \t\t\t\t<tbody>
 \t\t
 \t\t";
-        // line 30
+        // line 42
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["datos"]) ? $context["datos"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["valor"]) {
-            // line 31
-            echo "\t\t\t";
-            // line 32
+            // line 43
             echo "\t\t\t\t\t<tr>
-\t\t\t\t\t\t<th><a href=\"?accion=ver&amp;id=";
-            // line 33
+\t\t\t\t\t\t<th><input type=\"checkbox\" name=\"eliminar[]\" value=\"";
+            // line 44
+            echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "0", array(), "array"), "html", null, true);
+            echo "\"></th>
+\t\t\t\t\t\t<th><a href=\"?accion=vistamodificar&amp;id=";
+            // line 45
             echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "0", array(), "array"), "html", null, true);
             echo "\">";
             echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "1", array(), "array"), "html", null, true);
             echo "</a></th>
 \t\t\t\t\t\t<td>";
-            // line 34
+            // line 46
             echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "2", array(), "array"), "html", null, true);
             echo "</td>
-\t\t\t\t\t\t<td>";
-            // line 35
-            echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "3", array(), "array"), "html", null, true);
-            echo "</td>
-\t\t\t\t\t\t
-\t\t\t\t\t\t<td><a href=\"?accion=vistadesasignar&amp;id=";
-            // line 37
-            echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "0", array(), "array"), "html", null, true);
-            echo "\"><button type=\"button\" class=\"btn btn-success\">";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "EliminarAsignaturas", array(), "array"), "html", null, true);
-            echo "</button></a></td>
-\t\t\t\t\t\t<td><a href=\"?accion=vistaasignar&amp;id=";
-            // line 38
-            echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "0", array(), "array"), "html", null, true);
-            echo "\"><button type=\"button\" class=\"btn btn-success\">";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "AsignarAsignaturas", array(), "array"), "html", null, true);
-            echo "</button></a></td>
+\t\t\t\t\t\t";
+            // line 47
+            if (((isset($context["userTipo"]) ? $context["userTipo"] : null) == 1)) {
+                // line 48
+                echo "\t\t\t\t\t\t<td>";
+                echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "3", array(), "array"), "html", null, true);
+                echo "</td>
+\t\t\t\t\t\t";
+            }
+            // line 49
+            echo "\t\t
 \t\t\t\t\t\t<td><a href=\"?accion=vistamodificar&amp;id=";
-            // line 39
+            // line 50
             echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "0", array(), "array"), "html", null, true);
-            echo "\"><button type=\"button\" class=\"btn btn-primary\">";
+            echo "\"><img src=\"../img/modify.png\" width=\"40px\" height=\"40px\"> ";
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "cursomodificar", array(), "array"), "html", null, true);
-            echo "</button></a></td>
-\t\t\t\t\t\t<td><a href=\"?accion=vistaeliminar&amp;id=";
-            // line 40
+            echo "</img></a></td>
+\t\t\t\t\t\t<td><a href=\"javascript:;\" onclick=\"alert('CURSO_Controller.php?accion=eliminar&amp;id=";
+            // line 51
             echo twig_escape_filter($this->env, $this->getAttribute($context["valor"], "0", array(), "array"), "html", null, true);
-            echo "\"><button type=\"button\" class=\"btn btn-danger\">";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "cursoeliminar", array(), "array"), "html", null, true);
-            echo "</button></a></td>
+            echo "')\"><img src=\"../img/Delete.png\" width=\"40px\" height=\"40px\"> ";
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Borrar", array(), "array"), "html", null, true);
+            echo "</img></a></td>
 \t\t\t\t\t</tr>
 \t\t";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['valor'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 43
+        // line 54
         echo "\t\t\t\t</tbody>
 \t\t\t</table>
+\t\t</form>
 \t\t</div>
+\t</div>
+</body>
 ";
     }
 
@@ -158,6 +175,6 @@ class __TwigTemplate_15f9a1dbe264e693cc8de3f44acfdce343a85dbcd18e39e81e0f1bb7607
 
     public function getDebugInfo()
     {
-        return array (  143 => 43,  132 => 40,  126 => 39,  120 => 38,  114 => 37,  109 => 35,  105 => 34,  99 => 33,  96 => 32,  94 => 31,  90 => 30,  79 => 22,  75 => 21,  71 => 20,  65 => 16,  58 => 13,  55 => 12,  49 => 9,  43 => 7,  41 => 6,  38 => 5,  35 => 4,  29 => 3,);
+        return array (  157 => 54,  146 => 51,  140 => 50,  137 => 49,  131 => 48,  129 => 47,  125 => 46,  119 => 45,  115 => 44,  112 => 43,  108 => 42,  98 => 34,  92 => 32,  90 => 31,  86 => 30,  82 => 29,  71 => 21,  68 => 20,  62 => 17,  59 => 16,  56 => 15,  50 => 12,  47 => 11,  45 => 10,  38 => 5,  35 => 4,  29 => 3,);
     }
 }

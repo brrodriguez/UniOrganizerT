@@ -35,132 +35,114 @@ class __TwigTemplate_66519bfb0ecd9e23a30bd035d5f9ae38a286e5722c232b1d02657248a3c
     public function block_body($context, array $blocks = array())
     {
         // line 5
-        echo "            <div class=\"container\">
-\t\t\t\t<br>
+        echo "        <div class=\"row\" style=\"clear:both;\">
+            <div class=\"container\">
                 <div align='left'>
-                    ";
-        // line 8
-        if (((isset($context["userTipo"]) ? $context["userTipo"] : null) == 2)) {
-            // line 9
-            echo "\t\t\t\t\t\t<a href='ALERTA_Controller.php?accion=";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Crear", array(), "array"), "html", null, true);
-            echo "'><button type=\"button\" class=\"btn btn-primary btn-lg btn-block\">";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Crear", array(), "array"), "html", null, true);
-            echo "</button></a>
-\t\t\t\t\t";
-        }
-        // line 11
-        echo "                    <table class=\"table\">
+                    <ul class=\"nav\">
+                        <li>
+                            <a href=\"?accion=vistafiltrar\"><img src=\"../img/filter.png\" width=\"40px\" height=\"40px\"> ";
+        // line 10
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "filtrar", array(), "array"), "html", null, true);
+        echo "</img></a>
+                        </li>
+                    </ul><br>
+                    <table class=\"table\">
                         <thead class=\"thead-dark\">
                             <tr>
-                                ";
-        // line 14
-        $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["lista"]) ? $context["lista"] : null));
-        foreach ($context['_seq'] as $context["_key"] => $context["titulo"]) {
-            // line 15
-            echo "                                    <th>
-                                    ";
-            // line 16
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), $context["titulo"], array(), "array"), "html", null, true);
-            echo "
-                                    </th>
-                                ";
-        }
-        $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['titulo'], $context['_parent'], $context['loop']);
-        $context = array_intersect_key($context, $_parent) + $_parent;
+                                <th scope=\"col\">";
+        // line 16
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "asuntoAlerta", array(), "array"), "html", null, true);
+        echo "</th>
+                                <th scope=\"col\">";
+        // line 17
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "descripcionAlerta", array(), "array"), "html", null, true);
+        echo "</th>
+                                <th scope=\"col\">";
+        // line 18
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Fecha", array(), "array"), "html", null, true);
+        echo "</th>
+                                <th scope=\"col\">";
         // line 19
-        echo "                            </tr>
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "HoraInicio", array(), "array"), "html", null, true);
+        echo "</th>
+                                <th scope=\"col\">";
+        // line 20
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "HoraFin", array(), "array"), "html", null, true);
+        echo "</th>
+                                <th scope=\"col\">";
+        // line 21
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "idEvento", array(), "array"), "html", null, true);
+        echo "</th>
+                                <th scope=\"col\"></th>
+\t\t\t\t\t            <th scope=\"col\"></th>
+                            </tr>
                         </thead>
                         <tbody>       
 \t\t\t\t\t\t\t\t";
-        // line 22
+        // line 27
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["datos"]) ? $context["datos"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["dato"]) {
-            // line 23
+            // line 28
             echo "                                    <tr>
-\t\t\t\t\t\t\t\t\t    ";
-            // line 24
-            $context['_parent'] = (array) $context;
-            $context['_seq'] = twig_ensure_traversable($context["dato"]);
-            foreach ($context['_seq'] as $context["clave"] => $context["valor"]) {
-                // line 25
-                echo "\t\t\t\t\t\t\t\t\t\t\t";
-                $context['_parent'] = (array) $context;
-                $context['_seq'] = twig_ensure_traversable((isset($context["lista"]) ? $context["lista"] : null));
-                foreach ($context['_seq'] as $context["_key"] => $context["key"]) {
-                    // line 26
-                    echo "\t\t\t\t\t\t\t\t\t\t\t\t";
-                    if (($context["clave"] == $context["key"])) {
-                        // line 27
-                        echo "\t\t\t\t\t\t\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t\t\t\t\t\t";
-                        // line 28
-                        if (($context["clave"] == "asuntoAlerta")) {
-                            // line 29
-                            echo "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href='ALERTA_Controller.php?idAlerta=";
-                            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "idAlerta", array(), "array"), "html", null, true);
-                            echo "&amp;accion=";
-                            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Ver", array(), "array"), "html", null, true);
-                            echo "'>";
-                            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "asuntoAlerta", array(), "array"), "html", null, true);
-                            echo "</a>
-\t\t\t\t\t\t\t\t\t\t\t\t\t";
-                        } else {
-                            // line 31
-                            echo "\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-                            echo twig_escape_filter($this->env, $context["valor"], "html", null, true);
-                            echo "\t\t\t\t\t\t\t\t\t\t\t\t\t
-                                                    ";
-                        }
-                        // line 32
-                        echo "\t\t\t\t\t\t\t\t\t
-\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t\t\t";
-                    }
-                    // line 34
-                    echo "\t\t\t\t\t\t\t\t\t\t
-\t\t\t\t\t\t\t\t\t\t    ";
-                }
-                $_parent = $context['_parent'];
-                unset($context['_seq'], $context['_iterated'], $context['_key'], $context['key'], $context['_parent'], $context['loop']);
-                $context = array_intersect_key($context, $_parent) + $_parent;
-                // line 36
-                echo "\t\t\t\t\t\t\t\t\t\t";
-            }
-            $_parent = $context['_parent'];
-            unset($context['_seq'], $context['_iterated'], $context['clave'], $context['valor'], $context['_parent'], $context['loop']);
-            $context = array_intersect_key($context, $_parent) + $_parent;
+                                        <th><a href='ALERTA_Controller.php?idAlerta=";
+            // line 29
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "0", array(), "array"), "html", null, true);
+            echo "&amp;accion=";
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Ver", array(), "array"), "html", null, true);
+            echo "'>";
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "1", array(), "array"), "html", null, true);
+            echo "</a></th>
+                                        <td>";
+            // line 30
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "2", array(), "array"), "html", null, true);
+            echo "</td>
+                                        <td>";
+            // line 31
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "3", array(), "array"), "html", null, true);
+            echo "</td>
+                                        <td>";
+            // line 32
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "4", array(), "array"), "html", null, true);
+            echo "</td>
+                                        <td>";
+            // line 33
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "5", array(), "array"), "html", null, true);
+            echo "</td>
+                                        <td>";
+            // line 34
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "6", array(), "array"), "html", null, true);
+            echo "</td>
+
+                                        <td><a href='ALERTA_Controller.php?idAlerta=";
+            // line 36
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "0", array(), "array"), "html", null, true);
+            echo "&amp;accion=";
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Modificar", array(), "array"), "html", null, true);
+            echo "'><img src=\"../img/modify.png\" width=\"40px\" height=\"40px\"> ";
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Modificar", array(), "array"), "html", null, true);
+            echo "</button></a></td>
+\t\t\t\t\t\t                <td><a href='ALERTA_Controller.php?idAlerta=";
             // line 37
-            echo "\t\t\t\t\t\t\t\t\t\t<td><button type=\"button\" class=\"btn btn-primary\"><a href='ALERTA_Controller.php?idAlerta=";
-            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "idAlerta", array(), "array"), "html", null, true);
-            echo "&amp;accion=";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Modificar", array(), "array"), "html", null, true);
-            echo "'>";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Modificar", array(), "array"), "html", null, true);
-            echo "</a></button></td>
-\t\t\t\t\t\t\t\t\t\t<td><button type=\"button\" class=\"btn btn-danger\"><a href='ALERTA_Controller.php?idAlerta=";
-            // line 38
-            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "idAlerta", array(), "array"), "html", null, true);
+            echo twig_escape_filter($this->env, $this->getAttribute($context["dato"], "0", array(), "array"), "html", null, true);
             echo "&amp;accion=";
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Borrar", array(), "array"), "html", null, true);
-            echo "'>";
+            echo "'><img src=\"../img/Delete.png\" width=\"40px\" height=\"40px\"> ";
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Borrar", array(), "array"), "html", null, true);
-            echo "</a></button></td>
+            echo "</button></a></td>
                                     </tr>
 \t\t\t\t\t\t\t\t";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['dato'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 40
+        // line 39
         echo "\t\t\t\t\t\t\t                           
                         </tbody>
                     </table>
                 </div>
             </div>
+        </div>
 ";
     }
 
@@ -176,6 +158,6 @@ class __TwigTemplate_66519bfb0ecd9e23a30bd035d5f9ae38a286e5722c232b1d02657248a3c
 
     public function getDebugInfo()
     {
-        return array (  159 => 40,  146 => 38,  137 => 37,  131 => 36,  124 => 34,  119 => 32,  113 => 31,  103 => 29,  101 => 28,  98 => 27,  95 => 26,  90 => 25,  86 => 24,  83 => 23,  79 => 22,  74 => 19,  65 => 16,  62 => 15,  58 => 14,  53 => 11,  45 => 9,  43 => 8,  38 => 5,  35 => 4,  29 => 3,);
+        return array (  140 => 39,  127 => 37,  119 => 36,  114 => 34,  110 => 33,  106 => 32,  102 => 31,  98 => 30,  90 => 29,  87 => 28,  83 => 27,  74 => 21,  70 => 20,  66 => 19,  62 => 18,  58 => 17,  54 => 16,  45 => 10,  38 => 5,  35 => 4,  29 => 3,);
     }
 }
