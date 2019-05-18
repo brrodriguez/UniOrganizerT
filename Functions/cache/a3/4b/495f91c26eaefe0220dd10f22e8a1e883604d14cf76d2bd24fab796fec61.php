@@ -35,14 +35,16 @@ class __TwigTemplate_a34b495f91c26eaefe0220dd10f22e8a1e883604d14cf76d2bd24fab796
     public function block_body($context, array $blocks = array())
     {
         // line 5
-        echo "        <div class=\"container\">
+        echo "    <div class=\"row\" style=\"clear:both;\">
+\t\t<div class=\"container\">
             <br>
             <h2><div align=\"center\"><font color=\"#088A4B\">";
-        // line 7
+        // line 8
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), (isset($context["respuesta"]) ? $context["respuesta"] : null), array(), "array"), "html", null, true);
         echo "</font></div></h2>
             <br>
         </div>
+    </div>
 ";
     }
 
@@ -58,6 +60,6 @@ class __TwigTemplate_a34b495f91c26eaefe0220dd10f22e8a1e883604d14cf76d2bd24fab796
 
     public function getDebugInfo()
     {
-        return array (  42 => 7,  38 => 5,  35 => 4,  29 => 3,);
+        return array (  43 => 8,  38 => 5,  35 => 4,  29 => 3,);
     }
 }

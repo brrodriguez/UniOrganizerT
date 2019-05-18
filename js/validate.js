@@ -42,19 +42,21 @@ function validarFechaMenorActual(date) {
     x.setFullYear(fecha[0], fecha[1] - 1, fecha[2]);
     var today = new Date();
 
-    if (x >= today)
+    if (x >= today){
         return false;
-    else
+    }else{
         return true;
+    }
 }
 
 function validarHora(hora) {
     var hora = hora.split(":");
 
-    if (hora[0] < 9 or hora[0] > 21)
+    if (hora[0] < 9 || hora[0] > 21){
         return false;
-    else
+    }else{
         return true;
+    }
 }
 
 function valida_envia_username() {
@@ -304,68 +306,6 @@ function valida_envia_USUARIO() {
 
 }
 
-function valida_envia_ALERTA() {
-    if (document.form.asuntoAlerta.value.length == 0) {
-        alert("Introduzca un valor para el asunto");
-        document.form.asuntoAlerta.focus();
-        return false;
-    }
-	
-    if (document.form.asuntoAlerta.value.length < 2) {
-        alert("Asunto demasiado corto (mínimo 2 caracteres)");
-        document.form.asuntoAlerta.focus();
-        return false;
-    }
-	
-    if (document.form.asuntoAlerta.value.length > 50) {
-        alert("Asunto demasiado largo (máximo 50 caracteres)");
-        document.form.asuntoAlerta.focus();
-        return false;
-    }
-
-    if (document.form.descripcionAlerta.value.length == 0) {
-        alert("Introduzca un valor para la descripcion");
-        document.form.descripcionAlerta.focus();
-        return false;
-    }
-	
-    if (!validarHora(document.form.hora.value)) {
-		alert("Introduce una hora entre las 9 y las 21");
-        document.form.hora.focus();
-        return false;
-    }
-
-    return true;
-
-}
-
-function valida_envia_asuntoAlerta() {
-    if (document.form.asuntoAlerta.value.length == 0) {
-        alert("Introduzca un valor para el asunto");
-        document.form.asuntoAlerta.focus();
-        return false;
-    }
-	
-    if (document.form.asuntoAlerta.value.length < 2) {
-        alert("Asunto demasiado corto (mínimo 2 caracteres)");
-        document.form.asuntoAlerta.focus();
-        return false;
-    }
-	
-    if (document.form.asuntoAlerta.value.length > 50) {
-        alert("Asunto demasiado largo (máximo 50 caracteres)");
-        document.form.asuntoAlerta.focus();
-        return false;
-    }
-}
-
-function valida_envia_descripcionAlerta() {
-    if (document.form.descripcionAlerta.value.length == 0) {
-        alert("Introduzca un valor para la descripcion");
-        document.form.descripcionAlerta.focus();
-        return false;
-    }
-}
 
 function valida_envia_hora() {
     if (!validarHora(document.form.hora.value)) {

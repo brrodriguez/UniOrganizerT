@@ -1,10 +1,12 @@
 <?php
-
 //LIBRERIA DE FUNCIONES
+header("Content-Type: text/html;charset=utf-8");
 //
 //Evalúa si el usuario se ha autenticado
 function IsAuthenticated() {
-    session_start();
+    if(!isset($_SESSION)){
+        session_start();
+    }
     if (!isset($_SESSION['login'])) {
         return false;
     } else {
@@ -109,15 +111,15 @@ function ConsultarIDRol($nombreRol) {
     return $result['idRol'];
 }
  
-//Devuelve el ID de un curso a partir de su nombre
-function ConsultarIDCurso($nombreCurso) {
+//Devuelve el ID de un calendario a partir de su nombre
+function ConsultarIDCalendario($nombreCalendario) {
     $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
     if ($mysqli->connect_errno) {
         echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
-    $sql = "SELECT idCurso FROM Curso WHERE nombreCurso='" . $nombreCurso . "'";
+    $sql = "SELECT idCalendario FROM Calendario WHERE nombreCalendario='" . $nombreCalendario . "'";
     $result = $mysqli->query($sql)->fetch_array();
-    return $result['idCurso'];
+    return $result['idCalendario'];
 }
  
 //Devuelve el id de un rol a partir del username del usuario
@@ -169,6 +171,8 @@ function añadirFuncionalidades($NOM) {
 //function tienePermisos($string) {
 //    return class_exists($string);
 //}
+
+
 //Revisa si tiene permiso al comprobar si se ha incluido la clase a la que se quiere acceder
 function tienePermisos($string) {
     $toret = array();
@@ -227,69 +231,58 @@ function ListarUsuarios() {
     return $toret;
 }
 
-//Devuelve un curso a partir de su id
-function obtenerCursos($idCalendario) {
+function registerGlobals($twig){
+    if(!isset($_SESSION)){
+        session_start();
+    }
+    $twig->addGlobal('user', $_SESSION['login']);
+	$twig->addGlobal('pass', $_SESSION['pass']);
+	$twig->addGlobal('IDIOMA', $_SESSION['IDIOMA']);
+    $twig->addGlobal('session', $_SESSION);
+	$twig->addGlobal('userTipo', $_SESSION['userLogin']);
+	$twig->addGlobal('numEventos', $_SESSION['num']);
+    $twig->addGlobal('funcionalidades', $_SESSION['filas']);
+    $twig->addGlobal('eventos', $_SESSION['eventos']);
+    $twig->addGlobal('alertas', $_SESSION['alertas']);
+    $twig->addGlobal('calendarios', $_SESSION['misCalendarios']);
+}
+
+//Devuelve lista de calendarios
+function obtenerCalendarios($username) {
 
     $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
     if ($mysqli->connect_errno) {
         echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
-    $sql = "SELECT * FROM curso WHERE idCalendario= '" . $idCalendario . "'";
+    $sql = "SELECT * FROM calendario WHERE username= '" . $username . "'";
     if (!($resultado = $mysqli->query($sql))) {
         echo 'Error en la consulta sobre la base de datos';
     } else {
         $toret = $resultado->fetch_all();
     }
-    return $toret['nombreCurso'];
+    return $toret['nombreCalendario'];
 }
 
-//Devuelve el número de calendarios mas uno
-function ObtenerNumCalendarios() {
+//Devuelve lista de asignaturas
+function borrarAsignaturas() {
+
     $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
     if ($mysqli->connect_errno) {
         echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
-    $sql = "SELECT MAX(idCalendario) AS max FROM calendario";
-    $result = $mysqli->query($sql)->fetch_array();
-	$result['max']=$result['max']+1;
-    return $result['max'];
+    $sql = "DELETE FROM asignatura";
+    if (!($resultado = $mysqli->query($sql))) {
+        echo 'Error en la consulta sobre la base de datos';
+    }
 }
 
-//Devuelve el id del calendario del usuario
-function ObtenerCalendario($username) {
+//Devuelve el ID del último calendario insertado
+function obtenerUltimoCalendario() {
     $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
     if ($mysqli->connect_errno) {
         echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
-    $sql = "SELECT idCalendario FROM calendario WHERE username= '" . $username . "'";
-	if (!($result = $mysqli->query($sql))) {
-            return 'Error en la función obtenerCalendario.';
-    }
-	$toret = $result->fetch_array();
-    return $toret['idCalendario'];
-}
-
-//Devuelve el username del calendario a partir del id
-function ObtenerUsername($id) {
-    $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
-    if ($mysqli->connect_errno) {
-        echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-    }
-    $sql = "SELECT username FROM calendario WHERE idCalendario= '" . $id . "'";
-	if (!($result = $mysqli->query($sql))) {
-            return 'Error en la función obtenerCalendario.';
-    }
-	$toret = $result->fetch_array();
-    return $toret['username'];
-}
-
-//Devuelve el ID del último curso insertado
-function obtenerUltimoCurso() {
-    $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
-    if ($mysqli->connect_errno) {
-        echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-    }
-    $sql = "SELECT MAX(idCurso) AS id FROM curso";
+    $sql = "SELECT MAX(idCalendario) AS id FROM calendario";
     if (!($resultado = $mysqli->query($sql))) {
         return 'Error en la consulta sobre la base de datos.';
     } else {
@@ -298,20 +291,52 @@ function obtenerUltimoCurso() {
     }
 }
 
-//Devuelve el ID de un curso a partir de su nombre
-function obtenerIdCurso($curso) {
+//Devuelve el ID del último evento insertado
+function obtenerUltimoEvento() {
+    $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
+    if ($mysqli->connect_errno) {
+        echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+    }
+    $sql = "SELECT MAX(idEvento) AS id FROM evento";
+    if (!($resultado = $mysqli->query($sql))) {
+        return 'Error en la consulta sobre la base de datos.';
+    } else {
+        $toret = $resultado->fetch_array();
+		return $toret['id'];
+    }
+}
+
+//Devuelve el ID de un calendario a partir de su nombre
+function obtenerIdCalendario($calendario) {
     $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
     if ($mysqli->connect_errno) {
         echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
 
-    $sql = "SELECT idCurso AS id FROM curso WHERE nombreCurso='" . $curso . "'";
+    $sql = "SELECT idCalendario AS id FROM calendario WHERE nombreCalendario='" . $calendario . "'";
     if (!($resultado = $mysqli->query($sql))) {
         return 'Error en la consulta sobre la base de datos.';
     } else {
         $toret = $resultado->fetch_array();
-        $idCurso = $toret['id'];
-		return $idCurso;
+        $idCalendario = $toret['id'];
+		return $idCalendario;
+    }
+}
+
+//Devuelve el ID de un evento a partir de una alerta
+function obtenerEvento($idAlerta) {
+    $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
+    if ($mysqli->connect_errno) {
+        echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+    }
+
+    $sql = "SELECT idEvento AS id FROM alerta WHERE idAlerta='" . $idAlerta . "'";
+    if (!($resultado = $mysqli->query($sql))) {
+        return 'Error en la consulta sobre la base de datos.';
+    } else {
+        $toret = $resultado->fetch_array();
+        $idEvento = $toret['id'];
+		return $idEvento;
     }
 }
 
@@ -322,25 +347,41 @@ function obtenerIdAsignatura($asignatura) {
         echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
 
-    $sql = "SELECT idAsignatura AS id FROM asignatura WHERE nombreAsignatura='" . $asignatura . "'";
+    $sql = "SELECT * FROM `asignatura` WHERE `nombreAsignatura` LIKE '" . $asignatura . "'";
     if (!($resultado = $mysqli->query($sql))) {
         return 'Error en la consulta sobre la base de datos.';
     } else {
         $toret = $resultado->fetch_array();
-        $idAsignatura = $toret['id'];
+        $idAsignatura = $toret['idAsignatura'];
 		return $idAsignatura;
     }
 }
 
+//Devuelve el nombre de una asignatura a partir de su id
+function obtenerNombreAsignatura($idAsignatura) {
+    $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
+    if ($mysqli->connect_errno) {
+        echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+    }
 
-//Devuelve los datos de una entrega
-    function obtenerDatosEntrega($idCalendarioHoras) {
+    $sql = "SELECT nombreAsignatura AS nombre FROM asignatura WHERE idAsignatura='" . $idAsignatura . "'";
+    if (!($resultado = $mysqli->query($sql))) {
+        return 'Error en la consulta sobre la base de datos.';
+    } else {
+        $toret = $resultado->fetch_array();
+        $nombreAsignatura = $toret['nombre'];
+		return $nombreAsignatura;
+    }
+}
+
+    //Devuelve los datos de un evento
+    function obtenerDatosEvento($idEvento) {
         $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
 		if ($mysqli->connect_errno) {
 			echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 		
-        $sql = "SELECT A.idCalendarioHoras, A.asuntoEntrega, A.idCurso, B.dia, B.horaInicio FROM calendario_horas A, horas_posibles B WHERE A.idHoraPosible=B.idHoraPosible AND idCalendarioHoras= '" . $idCalendarioHoras . "'";
+        $sql = "SELECT idEvento, asuntoEvento, descripcionEvento, dia, horaInicio, horaFin, idAsignatura FROM evento WHERE idEvento= '" . $idEvento . "'";
         if (($resultado = $mysqli->query($sql))) {
             $result = $resultado->fetch_array();
             return $result;
@@ -349,14 +390,14 @@ function obtenerIdAsignatura($asignatura) {
         }
     }
 	
-	//Devuelve los datos de una entrega
-    function obtenerDatosEvento($idAlerta) {
+	//Devuelve los datos de una alerta
+    function obtenerDatosAlerta($idAlerta) {
         $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
 		if ($mysqli->connect_errno) {
 			echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 		}
 		
-        $sql = "SELECT A.idCalendarioHoras, A.asuntoEntrega, A.idCurso, B.dia, B.horaInicio FROM calendario_horas A, horas_posibles B WHERE A.idHoraPosible=B.idHoraPosible AND idAlerta= '" . $idAlerta . "'";
+        $sql = "SELECT idAlerta, asuntoAlerta, descripcionAlerta, dia, horaInicio, horaFin, idEvento FROM alerta WHERE idAlerta= '" . $idAlerta . "'";
         if (($resultado = $mysqli->query($sql))) {
             $result = $resultado->fetch_array();
             return $result;
@@ -366,13 +407,13 @@ function obtenerIdAsignatura($asignatura) {
     }
 
 //Devuelve el número de eventos do los dos días siguientes.
-function numEventosAlertas($fecha1, $fecha2) {
+function numEventos($fecha1, $fecha2) {
     $mysqli = new mysqli("localhost", "root", "", "uniorganizer");
     if ($mysqli->connect_errno) {
         echo "Fallo al conectar a MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
 
-    $sql = "SELECT count(*) AS num FROM calendario_horas A, horas_posibles B WHERE A.idHoraPosible=B.idHoraPosible AND (B.dia='" . $fecha1 . "' OR B.dia='" . $fecha2 . "')";
+    $sql = "SELECT count(*) AS num FROM evento WHERE (dia='" . $fecha1 . "' OR dia='" . $fecha2 . "')";
     if (!($resultado = $mysqli->query($sql))) {
         return 'Error en la consulta sobre la base de datos.';
     } else {
@@ -396,7 +437,7 @@ function extraerEntregasPrimero(){
 	foreach($cal->getSortedEvents() as $entrega) {
 		$primero[$asig][$i] = $entrega['SUMMARY'];
 		$i++;
-		$primero[$asig][$i] = $entrega['DTSTART'];
+        $primero[$asig][$i] = $entrega['DTSTART'];
 		$i=0;
 		$asig++;
 	}
@@ -413,7 +454,7 @@ function extraerEntregasSegundo(){
 	foreach($cal->getSortedEvents() as $entrega) {
 		$segundo[$asig][$i] = $entrega['SUMMARY'];
 		$i++;
-		$segundo[$asig][$i] = $entrega['DTSTART'];
+        $segundo[$asig][$i] = $entrega['DTSTART'];
 		$i=0;
 		$asig++;
 	}
@@ -430,7 +471,7 @@ function extraerEntregasTercero(){
 	foreach($cal->getSortedEvents() as $entrega) {
 		$tercero[$asig][$i] = $entrega['SUMMARY'];
 		$i++;
-		$tercero[$asig][$i] = $entrega['DTSTART'];
+        $tercero[$asig][$i] = $entrega['DTSTART'];
 		$i=0;
 		$asig++;
 	}
@@ -447,14 +488,14 @@ function extraerEntregasCuarto(){
 	foreach($cal->getSortedEvents() as $entrega) {
 		$cuarto[$asig][$i] = $entrega['SUMMARY'];
 		$i++;
-		$cuarto[$asig][$i] = $entrega['DTSTART'];
+        $cuarto[$asig][$i] = $entrega['DTSTART'];
 		$i=0;
 		$asig++;
 	}
 	return $cuarto;
 }
 
-include("C:\/xampp/htdocs/UniOrganizerT/Librerías/simplehtmldom/simple_html_dom.php");
+include("C:\/xampp/htdocs/UniOrganizer/Librerías/simplehtmldom/simple_html_dom.php");
 //Funcion para extraer de la web de la universidad, mediante web scraping, todas las asignaturas del grado
 function extraerAsignaturas(){
     // Creamos un objeto DOM directamente desde una URL

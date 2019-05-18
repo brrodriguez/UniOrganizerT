@@ -28,7 +28,7 @@ class __TwigTemplate_342bea1bfeb32efb5d7942acf9b23afb9fb9fd31dd4067c410198f3afeb
     // line 3
     public function block_title($context, array $blocks = array())
     {
-        echo "Inicio";
+        echo "UniOrganizer";
     }
 
     // line 4

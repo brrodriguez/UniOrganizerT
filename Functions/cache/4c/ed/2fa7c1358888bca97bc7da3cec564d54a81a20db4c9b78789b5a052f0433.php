@@ -22,7 +22,7 @@ class __TwigTemplate_4ced2fa7c1358888bca97bc7da3cec564d54a81a20db4c9b78789b5a052
         echo "<!DOCTYPE html>
 <html>
     <head>
-        <meta charset=\"UTF-8\" />
+        <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />
         <title>";
         // line 5
         $this->displayBlock('title', $context, $blocks);
@@ -48,18 +48,17 @@ class __TwigTemplate_4ced2fa7c1358888bca97bc7da3cec564d54a81a20db4c9b78789b5a052
         // line 19
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "password", array(), "array"), "html", null, true);
         echo "\" required class=\"form-control input-lg\" id=\"password\" />
-                    <button type=\"submit\" name=\"accion\" class=\"btn btn-lg btn-primary btn-block\" value=\"Login\">Sign in</button>
+                    <button type=\"submit\" name=\"accion\" class=\"btn btn-lg btn-primary btn-block\" value=\"Login\">Iniciar Sesión</button>
                     <div>
                         <p>
 \t\t\t\t\t\t\t<select name=\"IDIOMA\">
                                 <option value=\"Castellano\">Castellano</option>
-                                <option value=\"Galego\">Galego</option>
                                 <option value=\"English\">English</option>
                             </select>
 \t\t\t\t\t\t</p>
                         <div aling='center'>
 \t\t\t\t\t\t\t<a href='../Functions/index.php'>";
-        // line 30
+        // line 29
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["strings"]) ? $context["strings"] : null), "Volver", array(), "array"), "html", null, true);
         echo "</a>
                         </div>
@@ -71,9 +70,9 @@ class __TwigTemplate_4ced2fa7c1358888bca97bc7da3cec564d54a81a20db4c9b78789b5a052
             </section>
         </section>
         ";
-        // line 39
+        // line 38
         $this->displayBlock('javascripts', $context, $blocks);
-        // line 44
+        // line 43
         echo "    </body>
 </html>";
     }
@@ -96,10 +95,10 @@ class __TwigTemplate_4ced2fa7c1358888bca97bc7da3cec564d54a81a20db4c9b78789b5a052
         ";
     }
 
-    // line 39
+    // line 38
     public function block_javascripts($context, array $blocks = array())
     {
-        // line 40
+        // line 39
         echo "            <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>
             <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\" integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\" crossorigin=\"anonymous\"></script>
             <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\" integrity=\"sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM\" crossorigin=\"anonymous\"></script>
@@ -118,6 +117,6 @@ class __TwigTemplate_4ced2fa7c1358888bca97bc7da3cec564d54a81a20db4c9b78789b5a052
 
     public function getDebugInfo()
     {
-        return array (  103 => 40,  100 => 39,  91 => 7,  88 => 6,  82 => 5,  77 => 44,  75 => 39,  63 => 30,  49 => 19,  45 => 18,  34 => 11,  32 => 6,  28 => 5,  22 => 1,);
+        return array (  102 => 39,  99 => 38,  90 => 7,  87 => 6,  81 => 5,  76 => 43,  74 => 38,  62 => 29,  49 => 19,  45 => 18,  34 => 11,  32 => 6,  28 => 5,  22 => 1,);
     }
 }

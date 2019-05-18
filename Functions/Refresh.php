@@ -1,18 +1,21 @@
 <?php
 
-//ÍNDICE
+//Gestión de actualizar datos de calendario
 include_once '../Models/USUARIO_Model.php';
 include_once '../Functions/LibraryFunctions.php';
 require_once '../Twig/Autoloader.php';
-include '../Locates/Strings_Castellano.php';
 header("Content-Type: text/html;charset=utf-8");
 
 Twig_Autoloader::register();
 $loader = new Twig_Loader_Filesystem( '../templates');
 $twig = new Twig_Environment($loader, array('cache' =>  'cache','debug' =>  'true'));
 
-if (IsAuthenticated()) { //Si no está autenticado envía al login y si lo está, a la vista por defecto
-            $usuario = new USUARIO_Modelo($_SESSION['login'], '', '', '', '', '', '', '', '');
+
+if (isset($_REQUEST['accion'])) {
+    if ($_REQUEST['accion'] == 'Refresh') {
+
+			$usuario = new USUARIO_Modelo($_REQUEST['username'], '', '', '', '', '', '', '', '');
+			session_start();
 
 			$eventos = $usuario->listarEventos();
 			$asignaturas = $usuario->listarAsignaturas();
@@ -58,8 +61,8 @@ if (IsAuthenticated()) { //Si no está autenticado envía al login y si lo está
 
 			$template = $twig->loadTemplate('Default.html.twig');
     		echo $template->render(array('strings' => $strings));
-} else {
-    $template = $twig->loadTemplate('DefaultNoLogin.html.twig');
-    echo $template->render(array());
+
+    }
 }
 ?>
+       
