@@ -1,6 +1,7 @@
 <?php
 
 include_once '../Functions/LibraryFunctions.php';
+header("Content-Type: text/html;charset=utf-8");
 
 class ASIGNATURA_Model {
 
@@ -20,6 +21,8 @@ class ASIGNATURA_Model {
         if ($this->mysqli->connect_errno) {
             echo "Fallo al conectar a MySQL: (" . $this->mysqli->connect_errno . ") " . $this->mysqli->connect_error;
         }
+        // Change character set to utf8
+        mysqli_set_charset($this->mysqli,"utf8");
     }
 
 //Devuelve una lista de todas las asignaturas
@@ -42,7 +45,7 @@ class ASIGNATURA_Model {
 //Devuelve una lista de las asignaturas del usuario
     function ListarAsignaturasUsuario() {
         $this->ConectarBD();
-        $sql = "SELECT * FROM asignatura A, asignatura_curso B, curso C WHERE A.idAsignatura=B.idAsignatura AND B.idCurso=C.idCurso AND C.idCalendario='" . $_SESSION['calendario'] . "'";
+        $sql = "SELECT * FROM asignatura A, evento E, calendario_evento Q, calendario C WHERE A.idAsignatura=E.idAsignatura AND E.idEvento=Q.idEvento AND Q.idCalendario=C.idCalendario AND C.username='" . $_SESSION['login'] . "'";
         if (!($resultado = $this->mysqli->query($sql))) {
             return 'Error en la consulta sobre la base de datos.';
         } else {

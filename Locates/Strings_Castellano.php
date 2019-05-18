@@ -1,10 +1,5 @@
 <?php
-require_once '../Twig/Autoloader.php';
-
-Twig_Autoloader::register();
-$loader = new Twig_Loader_Filesystem( '../templates');
-$twig = new Twig_Environment($loader, array('cache' =>  'cache','debug' =>  'true'));
-
+header("Content-Type: text/html;charset=utf-8");
 //CADENAS UTILIZADAS EN CASTELLANO
 $strings = array(
 
@@ -31,11 +26,22 @@ $strings = array(
  'No se importó correctamente porque no se seleccionó ningún curso' => 'No se importó correctamente porque no se seleccionó ningún curso',
  'Debe seleccionar un Curso' => 'Debe seleccionar un Curso',
  'NumSesiones' => 'Número de Calendarios',
- 'Error: ya existe un curso con ese nombre.' => 'Error: ya existe un curso con ese nombre.',
+ 'Error: ya existe un calendario con ese nombre.' => 'Error: ya existe un calendario con ese nombre.',
  'Asignaturas asignadas correctamente.' => 'Asignaturas asignadas correctamente.',
  'Asignaturas eliminadas correctamente.' => 'Asignaturas eliminadas correctamente.',
- 'Curso modificado correctamente.' => 'Curso modificado correctamente.',
- 'Curso eliminado correctamente.' => 'Curso eliminado correctamente.',
+ 'Calendario modificado correctamente.' => 'Calendario modificado correctamente.',
+ 'Calendario eliminado correctamente.' => 'Calendario eliminado correctamente.',
+ 'Error al insertar en tabla calendario_evento.' => 'Error al insertar en tabla calendario_evento.',
+ 'tituloPU' => 'Estás seguro?',
+ 'textoPU' => 'Si confirmas, se eliminará el registro de manera definitiva!',
+ 'botonCancel' => 'Cancelar',
+ 'botonOk' => 'Confirmar',
+ 'El calendario se ha modificado con éxito.' => 'El calendario se ha modificado con éxito.',
+ 'Modificación realizada con éxito' => 'Modificación realizada con éxito',
+ 'Éste evento ya existe' => 'Éste evento ya existe',
+ 'Acerca de UniOrganizer' => 'Acerca de UniOrganizer',
+ 'Aplicación para facilitar la gestión y organización a estudiantes universitarios.' => 'Aplicación para facilitar la gestión y organización a estudiantes universitarios.',
+ 'Contacto' => 'Contacto',
  
 //MENU
  'Iniciar Sesion' => 'Iniciar Sesion',
@@ -47,13 +53,30 @@ $strings = array(
  'Gestión de Usuarios' => 'Usuarios',
  'Gestión de Alertas' => 'Alertas',
  'Gestión de Eventos' => 'Eventos',
- 'Gestión de Calendarios' => 'Calendarios',
  'Gestión de Asignaturas' => 'Asignaturas',
- 'Gestión de Cursos' => 'Cursos',
+ 'Gestión de Calendarios' => 'Calendarios',
  'Calendario' => 'Calendario',
  'Gestionar' => 'Gestionar',
  'Información' => 'Información',
     
+//Templates
+'Vista Principal' => 'Vista Principal',
+'Crear Alerta' => 'Crear Alerta',
+'Editar Alerta' => 'Editar Alerta',
+'Lista Asignaturas' => 'Lista Asignaturas',
+'Lista Calendarios' => 'Lista Calendarios',
+'Crear Calendario' => 'Crear Calendario',
+'Editar Calendario' => 'Editar Calendario',
+'Filtrar Calendarios' => 'Filtrar Calendarios',
+'Crear Evento' => 'Crear Evento',
+'Editar Evento' => 'Editar Evento',
+'Filtrar Eventos' => 'Filtrar Eventos',
+'Lista Eventos' => 'Lista Eventos',
+'Crear Usuario' => 'Crear Usuario',
+'Editar Usuario' => 'Editar Usuario',
+'Ver Usuario' => 'Ver Usuario',
+'Lista Usuarios' => 'Lista Usuarios',
+
 //Acciones
  'Volver' => 'Volver',
  'Insertar' => 'Insertar',
@@ -67,6 +90,7 @@ $strings = array(
  'Guardar' => 'Guardar',
  'Asignar' => 'Asignar',
  'ver' => 'ver',
+ 'Inicio' => 'Vista Principal',
  
 //USUARIOS
  'username' => 'Usuario',
@@ -93,28 +117,57 @@ $strings = array(
  
 
 //Alertas
- 'idAlerta' => 'ID',
+ 'alertas' => 'Alertas',
+ 'idAlerta' => 'ID Alerta',
  'fechaHora' => 'Fecha',
  'asuntoAlerta' => 'Asunto',
  'Descripción' => 'Descripción',
  'descripcionAlerta' => 'Descripción',
  'Ver Alerta' => 'Ver Evento',
+ 'CrearAlerta' => 'Nueva Alerta',
  'Insertar Alerta' => 'Crear Evento',
  'Modificar Alerta' => 'Modificar Evento',
  'Añadir Alerta' => 'Crear Alerta',
  'Borrar Alerta' => 'Borrar Evento',
- 'La alerta fue borrada con éxito.' => 'El evento fue borrado con éxito',
+ 'La alerta fue borrada con éxito.' => 'La alerta fue borrada con éxito.',
  'No se ha podido conectar con la base de datos en INSERT calendario_horas.' => 'No se pudo crear la Alerta porque no existe ese día en el calendario.',
  'Asunto' => 'Asunto',
  'Fecha' => 'Fecha',
- 'Hora' => 'Hora',
+ 'HoraInicio' => 'H. Inicio',
+ 'HoraFin' => 'H. Fin',
  'Dias' => 'Dias',
  'Mensaje' => 'Mensaje',
- 'Crear' =>'Nuevo Evento',
+ 'Crear' =>'Crear',
  'Aviso' =>'Introduce cuantos días antes quieres que el sistema te recuerde este evento.',
+ 'idEvento' =>'ID Evento',
+ 'eliminarSeleccionadas' =>'Eliminar Seleccionadas',
 
- 
-//Calendarios
+ //Eventos
+ 'idEvento' => 'ID Evento',
+ 'fechaHora' => 'Fecha',
+ 'asuntoEvento' => 'Asunto',
+ 'Descripción' => 'Descripción',
+ 'descripcionEvento' => 'Descripción',
+ 'Ver Evento' => 'Ver Evento',
+ 'CrearEvento' => 'Nuevo Evento',
+ 'Insertar Evento' => 'Crear Evento',
+ 'Modificar Evento' => 'Modificar Evento',
+ 'Añadir Evento' => 'Crear Evento',
+ 'Borrar Evento' => 'Borrar Evento',
+ 'El evento fue borrado con éxito.' => 'El evento fue borrado con éxito',
+ 'No se ha podido conectar con la base de datos en INSERT calendario_horas.' => 'No se pudo crear el Evento porque no existe ese día en el calendario.',
+ 'Asunto' => 'Asunto',
+ 'Fecha' => 'Fecha',
+ 'HoraInicio' => 'Inicio',
+ 'HoraFin' => 'Fin',
+ 'Dias' => 'Dias',
+ 'Mensaje' => 'Mensaje',
+ 'Aviso' =>'Introduce cuantos días antes quieres que el sistema te recuerde este evento.',
+ 'curso' => 'Curso',
+ 'asignatura' => 'Asignatura',
+ 'Filtrar Eventos' => 'Filtrar Eventos',
+
+//Calendario Principal
 
  'Monday' => 'Lunes',
  'Tuesday' => 'Martes',
@@ -126,6 +179,7 @@ $strings = array(
  'Anterior Semana' => 'Anterior Semana',
  'Próxima Semana' => 'Próxima Semana',
  'Filtrar' => 'Filtrar',
+ 'Refresh' => 'Recargar',
  'Examen' => 'Examen:',
  'nombreCalendario' => 'Nombre',
  'idCalendario' => 'ID Calendario',
@@ -133,13 +187,13 @@ $strings = array(
  'Se ha insertado con éxito' => 'Se ha insertado con éxito',
  'Iniciar sesion' => 'Iniciar sesión',
  'IniciarSesion' => 'Iniciar Sesión',
- 'El calendario se ha modificado con éxito.' => 'El calendario se ha modificado con éxito.',
 
 //Asignaturas
+ 'idAsignatura' => 'ID Asignatura',
  'nombreAsignatura' => 'Nombre de la Asignatura',
- 'asignaturanombreCurso' => 'Nombre Asignatura',
+ 'asignaturanombreCalendario' => 'Nombre Asignatura',
  'descripcionAsignatura' => 'Descripción de la Asignatura',
- 'asignaturadescCurso' => 'Descripción Asignatura',
+ 'asignaturadescCalendario' => 'Descripción Asignatura',
  'saveform' => 'Guardar',
  'newAsignatura' => 'Nueva Asignatura',
  'asignaturanombre' => 'Nombre',
@@ -149,37 +203,44 @@ $strings = array(
  'Eliminar Asignatura' => 'Eliminar Asignatura',
  'Guia' => 'Guía Docente',
  
-//Cursos
- 'Curso' => 'Curso',
- 'nombreCurso2' => 'Nombre del Curso',
- 'descripcionCurso2' => 'Descripción del Curso',
- 'cursoname' => 'Nombre del Curso',
- 'cursodesc' => 'Descripción del Curso',
- 'savecurso' => 'Guardar',
- 'newcurso' => 'Nuevo Curso Vacío',
+//Calendarios
+ 'Calendario' => 'Calendario',
+ 'nombreCalendario2' => 'Nombre del Calendario',
+ 'descripcionCalendario2' => 'Descripción del Calendario',
+ 'calendarioname' => 'Nombre del Calendario',
+ 'calendariodesc' => 'Descripción del Calendario',
+ 'savecalendario' => 'Guardar',
+ 'newcalendario' => 'Nuevo Calendario',
  'obtenerCurso' => 'Importar Curso Completo',
- 'asignarcurso' => 'Asignar Asignaturas a Curso',
- 'seleccionaCurso' => 'Selecciona el Curso del que quieres importar únicamente sus asignaturas',
+ 'asignarcalendario' => 'Asignar Asignaturas a Calendario',
+ 'seleccionaCurso' => 'Selecciona el curso del que vas a importar todos los eventos',
+ 'seleccionaAsig' => 'Selecciona asignatura de la que vas a importar todos los eventos',
  'ó' => 'ó',
- 'closecurso' => 'Cerrar',
- 'cursoname2' => 'Nombre',
- 'cursodesc2' => 'Descripción',
- 'cursoasignar' => 'Asignar Asignaturas',
- 'cursomodificar' => 'Modificar',
- 'cursoeliminar' => 'Eliminar',
- 'Eliminar Curso' => 'Eliminar Curso',
- 'Cursos' => 'Cursos',
- 'nombreCurso' => 'Nombre del Curso',
- 'descripcionCurso' => 'Descripción',
+ 'closecalendario' => 'Cerrar',
+ 'calendarioname2' => 'Nombre',
+ 'calendariodesc2' => 'Descripción',
+ 'calendarioasignar' => 'Asignar Asignaturas',
+ 'calendariomodificar' => 'Modificar',
+ 'calendarioeliminar' => 'Eliminar',
+ 'Eliminar Calendario' => 'Eliminar Calednario',
+ 'Calendarios' => 'Calendarios',
+ 'nombreCalendario' => 'Nombre del Calendario',
+ 'descripcionCalendario' => 'Descripción',
  'AñadirAsignatura' => 'Añadir Asignatura',
+ 'ImportarAsignatura' => 'Importar Asignatura',
+ 'ImportarCurso' => 'Importar Curso',
  'AsignarAsignaturas' => 'Añadir Asignaturas',
  'EliminarAsignaturas' => 'Eliminar Asignaturas',
+ 'eliminarSelec' => 'Eliminar Seleccionados',
+ 'desasignar'=>'Eliminar Seleccionadas',
  'Asignatura'=>'Asignatura',
  'Guardar'=>'Guardar',
  'filtrar'=>'Filtrar',
- 'Filtrar Cursos'=>'Filtrar Cursos'
-    
+ 'crear'=>'Crear',
+ 'avisoC'=>'*Solo se visualizan las asignaturas que tienen algún evento.',
+ 'Filtrar Calendarios'=>'Filtrar Calendarios',
+ 'VerEventos'=>'Ver Eventos'
     
 );
-$twig->addGlobal('strings_Castellano', $strings);
+
 ?>
